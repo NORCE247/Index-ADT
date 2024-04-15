@@ -1,0 +1,50 @@
+\hypertarget{common_8h_source}{}\doxysection{common.\+h}
+\label{common_8h_source}\index{include/common.h@{include/common.h}}
+\mbox{\hyperlink{common_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef COMMON\_H}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define COMMON\_H}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <stdio.h>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <stdarg.h>}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{struct }\mbox{\hyperlink{structlist}{list}};}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{21 \textcolor{keyword}{typedef} int (*\mbox{\hyperlink{common_8h_acbcddb16067e036e809ea7359149ee4a}{cmpfunc\_t}})(\textcolor{keywordtype}{void} *, \textcolor{keywordtype}{void} *);}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{26 \textcolor{keyword}{typedef} void (*\mbox{\hyperlink{common_8h_a02b48f60231c274234ab74f2b463d46c}{exchfunc\_t}})(\textcolor{keywordtype}{void} *, \textcolor{keywordtype}{void} *);}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{31 \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} long (*\mbox{\hyperlink{common_8h_ac42ff75a5f0bd95cd98a48cf1a68b4a3}{hashfunc\_t}})(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} *);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{50 \textcolor{keywordtype}{void} \mbox{\hyperlink{common_8h_a8b2602ac7bd4b22fdd99eaf3bc9fe3ed}{tokenize\_file}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *filepath, \textcolor{keyword}{struct} \mbox{\hyperlink{structlist}{list}} *\mbox{\hyperlink{structlist}{list}});}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{59 \textcolor{keyword}{struct }\mbox{\hyperlink{structlist}{list}} *\mbox{\hyperlink{common_8h_ab3b2168f9984e1a7a1d0de1738b76916}{find\_files}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char} *root);}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{68 \textcolor{keywordtype}{int} \mbox{\hyperlink{common_8h_a0bae12cbe51b96df5ec944d2490e77d0}{compare\_strings}}(\textcolor{keywordtype}{void} *a, \textcolor{keywordtype}{void} *b);}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{76 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{common_8h_ad7000623f60312a722e472db496e0eae}{hash\_string}}(\textcolor{keywordtype}{void} *s);}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{90 \textcolor{keywordtype}{int} \mbox{\hyperlink{common_8h_abaff33dab72b301fe8076bb3abbd51e4}{compare\_pointers}}(\textcolor{keywordtype}{void} *a, \textcolor{keywordtype}{void} *b);}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+\DoxyCodeLine{101 \textcolor{keywordtype}{char} *\mbox{\hyperlink{common_8h_a36820005957b6ee952c178587b7003ec}{concatenate\_strings}} (\textcolor{keywordtype}{int} num\_strings, \textcolor{keyword}{const} \textcolor{keywordtype}{char} *first, ...);}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{110 \textcolor{keywordtype}{int} \mbox{\hyperlink{common_8h_a26c1e6dac955288160810d1f0752a0ab}{is\_valid\_directory}} (\textcolor{keyword}{const} \textcolor{keywordtype}{char} *dirpath);}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+\DoxyCodeLine{120 \textcolor{keywordtype}{int} \mbox{\hyperlink{common_8h_a595a3bec9205ca41c9e2fa46857405be}{is\_valid\_file}} (\textcolor{keyword}{const} \textcolor{keywordtype}{char} *filepath);}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{128 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} \mbox{\hyperlink{common_8h_ac8bf83e8c76bc642052836d01c449858}{gettime}}();}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

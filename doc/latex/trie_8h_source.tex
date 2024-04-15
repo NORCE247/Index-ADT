@@ -1,0 +1,42 @@
+\hypertarget{trie_8h_source}{}\doxysection{trie.\+h}
+\label{trie_8h_source}\index{include/trie.h@{include/trie.h}}
+\mbox{\hyperlink{trie_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef TRIE\_H}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define TRIE\_H}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{common_8h}{common.h}}"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 }
+\DoxyCodeLine{20 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{structtrie}{trie}} \mbox{\hyperlink{structtrie}{trie\_t}};}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{28 \mbox{\hyperlink{structtrie}{trie\_t}} *\mbox{\hyperlink{trie_8h_a8eb2243a62f8b3d6c9d3ee496f22ebef}{trie\_create}}();}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{comment}{/*}}
+\DoxyCodeLine{32 \textcolor{comment}{ * Destroys the given trie and its nodes}}
+\DoxyCodeLine{33 \textcolor{comment}{ */}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{43 \textcolor{keywordtype}{void} \mbox{\hyperlink{trie_8h_a19778081b2978ad7942355235b49f6b7}{trie\_destroy}}(\mbox{\hyperlink{structtrie}{trie\_t}} *\mbox{\hyperlink{structtrie}{trie}});}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{comment}{/*}}
+\DoxyCodeLine{47 \textcolor{comment}{ * Inserts a key and value into the trie}}
+\DoxyCodeLine{48 \textcolor{comment}{ */}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{62 \textcolor{keywordtype}{int} \mbox{\hyperlink{trie_8h_ad2f2bb9482cf4ea3e1b9b653d4758d7b}{trie\_insert}}(\mbox{\hyperlink{structtrie}{trie\_t}} *\mbox{\hyperlink{structtrie}{trie}}, \textcolor{keywordtype}{char} *key, \textcolor{keywordtype}{void} *value);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{comment}{/*}}
+\DoxyCodeLine{66 \textcolor{comment}{ * Finds a word in the trie.}}
+\DoxyCodeLine{67 \textcolor{comment}{ * IMPLEMENT THIS TO WORK WITH YOUR DESIGN.}}
+\DoxyCodeLine{68 \textcolor{comment}{ */}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{77 \textcolor{keywordtype}{char} *\mbox{\hyperlink{trie_8h_aa77a765a08e7090d771f1e71645f7f7b}{trie\_find}}(\mbox{\hyperlink{structtrie}{trie\_t}} *t, \textcolor{keywordtype}{char} *prefix);}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{80 }
+
+\end{DoxyCode}

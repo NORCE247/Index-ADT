@@ -1,0 +1,118 @@
+\hypertarget{printing_8h_source}{}\doxysection{printing.\+h}
+\label{printing_8h_source}\index{include/printing.h@{include/printing.h}}
+\mbox{\hyperlink{printing_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#ifndef PRINTING\_H}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define PRINTING\_H}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <stdlib.h>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{comment}{// Regular text escape codes}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#define BLK "{}\(\backslash\)033[0;30m"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define RED "{}\(\backslash\)033[0;31m"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define GRN "{}\(\backslash\)033[0;32m"{}}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#define YEL "{}\(\backslash\)033[0;33m"{}}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define BLU "{}\(\backslash\)033[0;34m"{}}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define MAG "{}\(\backslash\)033[0;35m"{}}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#define CYN "{}\(\backslash\)033[0;36m"{}}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define WHT "{}\(\backslash\)033[0;37m"{}}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{comment}{// Regular bold text escape codes}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define BBLK "{}\(\backslash\)033[1;30m"{}}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define BRED "{}\(\backslash\)033[1;31m"{}}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define BGRN "{}\(\backslash\)033[1;32m"{}}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#define BYEL "{}\(\backslash\)033[1;33m"{}}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define BBLU "{}\(\backslash\)033[1;34m"{}}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#define BMAG "{}\(\backslash\)033[1;35m"{}}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#define BCYN "{}\(\backslash\)033[1;36m"{}}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#define BWHT "{}\(\backslash\)033[1;37m"{}}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{comment}{// Regular underline text escape codes}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#define UBLK "{}\(\backslash\)033[4;30m"{}}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#define URED "{}\(\backslash\)033[4;31m"{}}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#define UGRN "{}\(\backslash\)033[4;32m"{}}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#define UYEL "{}\(\backslash\)033[4;33m"{}}}
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#define UBLU "{}\(\backslash\)033[4;34m"{}}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#define UMAG "{}\(\backslash\)033[4;35m"{}}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#define UCYN "{}\(\backslash\)033[4;36m"{}}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#define UWHT "{}\(\backslash\)033[4;37m"{}}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{comment}{// Regular background escape codes}}
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#define BLKB "{}\(\backslash\)033[40m"{}}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#define REDB "{}\(\backslash\)033[41m"{}}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#define GRNB "{}\(\backslash\)033[42m"{}}}
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#define YELB "{}\(\backslash\)033[43m"{}}}
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#define BLUB "{}\(\backslash\)033[44m"{}}}
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#define MAGB "{}\(\backslash\)033[45m"{}}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#define CYNB "{}\(\backslash\)033[46m"{}}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#define WHTB "{}\(\backslash\)033[47m"{}}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{comment}{// High intensty background escape codes}}
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#define BLKHB "{}\(\backslash\)033[0;100m"{}}}
+\DoxyCodeLine{66 \textcolor{preprocessor}{\#define REDHB "{}\(\backslash\)033[0;101m"{}}}
+\DoxyCodeLine{67 \textcolor{preprocessor}{\#define GRNHB "{}\(\backslash\)033[0;102m"{}}}
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#define YELHB "{}\(\backslash\)033[0;103m"{}}}
+\DoxyCodeLine{69 \textcolor{preprocessor}{\#define BLUHB "{}\(\backslash\)033[0;104m"{}}}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#define MAGHB "{}\(\backslash\)033[0;105m"{}}}
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#define CYNHB "{}\(\backslash\)033[0;106m"{}}}
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#define WHTHB "{}\(\backslash\)033[0;107m"{}}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{comment}{// High intensty text escape codes}}
+\DoxyCodeLine{75 \textcolor{preprocessor}{\#define HBLK "{}\(\backslash\)033[0;90m"{}}}
+\DoxyCodeLine{76 \textcolor{preprocessor}{\#define HRED "{}\(\backslash\)033[0;91m"{}}}
+\DoxyCodeLine{77 \textcolor{preprocessor}{\#define HGRN "{}\(\backslash\)033[0;92m"{}}}
+\DoxyCodeLine{78 \textcolor{preprocessor}{\#define HYEL "{}\(\backslash\)033[0;93m"{}}}
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#define HBLU "{}\(\backslash\)033[0;94m"{}}}
+\DoxyCodeLine{80 \textcolor{preprocessor}{\#define HMAG "{}\(\backslash\)033[0;95m"{}}}
+\DoxyCodeLine{81 \textcolor{preprocessor}{\#define HCYN "{}\(\backslash\)033[0;96m"{}}}
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#define HWHT "{}\(\backslash\)033[0;97m"{}}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{comment}{// Bold high intensity text escape codes}}
+\DoxyCodeLine{85 \textcolor{preprocessor}{\#define BHBLK "{}\(\backslash\)033[1;90m"{}}}
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#define BHRED "{}\(\backslash\)033[1;91m"{}}}
+\DoxyCodeLine{87 \textcolor{preprocessor}{\#define BHGRN "{}\(\backslash\)033[1;92m"{}}}
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#define BHYEL "{}\(\backslash\)033[1;93m"{}}}
+\DoxyCodeLine{89 \textcolor{preprocessor}{\#define BHBLU "{}\(\backslash\)033[1;94m"{}}}
+\DoxyCodeLine{90 \textcolor{preprocessor}{\#define BHMAG "{}\(\backslash\)033[1;95m"{}}}
+\DoxyCodeLine{91 \textcolor{preprocessor}{\#define BHCYN "{}\(\backslash\)033[1;96m"{}}}
+\DoxyCodeLine{92 \textcolor{preprocessor}{\#define BHWHT "{}\(\backslash\)033[1;97m"{}}}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 \textcolor{comment}{// Reset escape code}}
+\DoxyCodeLine{95 \textcolor{preprocessor}{\#define reset "{}\(\backslash\)033[0m"{}}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{preprocessor}{\#ifndef LOG\_LEVEL}}
+\DoxyCodeLine{105 \textcolor{preprocessor}{\#define LOG\_LEVEL 0}}
+\DoxyCodeLine{106 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// LOG\_LEVEL}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 \textcolor{preprocessor}{\#if LOG\_LEVEL <= 0}}
+\DoxyCodeLine{115 \textcolor{preprocessor}{\#define INFO\_PRINT(...) do \{ fprintf(stdout, "{}\%s"{}}, BGRN); fprintf(stdout, "{}[INFO][\%s \%d]: "{}, \_\_FILE\_\_, \_\_LINE\_\_); fprintf(stdout, "{}\%s"{}, reset); fprintf(stdout, \_\_VA\_ARGS\_\_); \} while(0)}
+\DoxyCodeLine{116 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{117 \textcolor{preprocessor}{\#define INFO\_PRINT(...) do \{ \} while(0)}}
+\DoxyCodeLine{118 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 \textcolor{preprocessor}{\#if LOG\_LEVEL <= 1}}
+\DoxyCodeLine{128 \textcolor{preprocessor}{\#define DEBUG\_PRINT(...) do \{ fprintf(stderr, "{}\%s"{}}, BYEL); fprintf(stderr, "{}[DEBUG][\%s \%d]: "{}, \_\_FILE\_\_, \_\_LINE\_\_); fprintf(stderr, "{}\%s"{}, reset); fprintf(stderr, \_\_VA\_ARGS\_\_); \} while(0)}
+\DoxyCodeLine{129 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{130 \textcolor{preprocessor}{\#define DEBUG\_PRINT(...) do \{ \} while(0)}}
+\DoxyCodeLine{131 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 \textcolor{preprocessor}{\#if LOG\_LEVEL <= 2}}
+\DoxyCodeLine{135 \textcolor{preprocessor}{\#ifdef ERROR\_FATAL}}
+\DoxyCodeLine{143 \textcolor{preprocessor}{\#define ERROR\_PRINT(...) do \{ fprintf(stderr, "{}\%s"{}}, BRED); fprintf(stderr, "{}[ERROR][\%s \%d]: "{}, \_\_FILE\_\_, \_\_LINE\_\_); fprintf(stderr, "{}\%s"{}, reset); fprintf(stderr, \_\_VA\_ARGS\_\_); exit(1); \} while(0)}
+\DoxyCodeLine{144 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{145 \textcolor{preprocessor}{\#define ERROR\_PRINT(...) do \{ fprintf(stderr, "{}\%s"{}}, BRED); fprintf(stderr, "{}[ERROR][\%s \%d]: "{}, \_\_FILE\_\_, \_\_LINE\_\_); fprintf(stderr, "{}\%s"{}, reset); fprintf(stderr, \_\_VA\_ARGS\_\_); \} while(0)}
+\DoxyCodeLine{146 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{147 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{148 \textcolor{preprocessor}{\#define ERROR\_PRINT(...) do \{ \} while(0)}}
+\DoxyCodeLine{149 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{156 \textcolor{preprocessor}{\#define TEST\_PRINT(...) do \{ fprintf(stderr, "{}\%s"{}}, BCYN); fprintf(stderr, "{}[TEST]: "{}); fprintf(stderr, \_\_VA\_ARGS\_\_); fprintf(stderr, "{}\%s"{}, reset);\} while(0)}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_\_PRINTING\_H\_\_}}
+
+\end{DoxyCode}

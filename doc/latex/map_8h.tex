@@ -1,0 +1,170 @@
+\hypertarget{map_8h}{}\doxysection{include/map.h File Reference}
+\label{map_8h}\index{include/map.h@{include/map.h}}
+
+
+Defines a chained hash table.  
+
+
+{\ttfamily \#include \char`\"{}common.\+h\char`\"{}}\newline
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structmap}{map}} \mbox{\hyperlink{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}{map\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}{map\+\_\+t}} $\ast$ \mbox{\hyperlink{map_8h_a59069f31be79d2d8cbbe6fa5018dd2e6}{map\+\_\+create}} (\mbox{\hyperlink{common_8h_acbcddb16067e036e809ea7359149ee4a}{cmpfunc\+\_\+t}} \mbox{\hyperlink{test_8c_ae402a26582ade22b61eb7efb4d58e985}{cmpfunc}}, \mbox{\hyperlink{common_8h_ac42ff75a5f0bd95cd98a48cf1a68b4a3}{hashfunc\+\_\+t}} hashfunc)
+\begin{DoxyCompactList}\small\item\em Creates a new empty hash table. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{map_8h_abd71eeb7c2feee874431daa84ad9c0e6}{map\+\_\+destroy}} (\mbox{\hyperlink{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}{map\+\_\+t}} $\ast$\mbox{\hyperlink{structmap}{map}}, void($\ast$destroy\+\_\+key)(void $\ast$), void($\ast$destroy\+\_\+val)(void $\ast$))
+\begin{DoxyCompactList}\small\item\em Destroys the given map. Will also destroy keys and values if functions are supplied. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{map_8h_adc2e234d9ada103fe5ac22180216dd07}{map\+\_\+put}} (\mbox{\hyperlink{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}{map\+\_\+t}} $\ast$\mbox{\hyperlink{structmap}{map}}, void $\ast$key, void $\ast$value)
+\begin{DoxyCompactList}\small\item\em Maps the given key to the given value. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{map_8h_ad0609e69d1380c6c0cdccdb32846c280}{map\+\_\+haskey}} (\mbox{\hyperlink{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}{map\+\_\+t}} $\ast$\mbox{\hyperlink{structmap}{map}}, void $\ast$key)
+\begin{DoxyCompactList}\small\item\em Check if a key is in the map. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{map_8h_a86cabb73ebab7f0a92f4e2cbd970ecf9}{map\+\_\+get}} (\mbox{\hyperlink{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}{map\+\_\+t}} $\ast$\mbox{\hyperlink{structmap}{map}}, void $\ast$key)
+\begin{DoxyCompactList}\small\item\em Returns the value the given key maps to. \end{DoxyCompactList}\item 
+unsigned long \mbox{\hyperlink{map_8h_a8035e709fa40f44aa8b256e917d95215}{djb2}} (unsigned char $\ast$str)
+\begin{DoxyCompactList}\small\item\em The djb2 hash algorithm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Defines a chained hash table. 
+
+\begin{DoxyAuthor}{Author}
+Steffen Viken Valvaag 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}\label{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}} 
+\index{map.h@{map.h}!map\_t@{map\_t}}
+\index{map\_t@{map\_t}!map.h@{map.h}}
+\doxysubsubsection{\texorpdfstring{map\_t}{map\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structmap}{map}} \mbox{\hyperlink{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}{map\+\_\+t}}}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{map_8h_a8035e709fa40f44aa8b256e917d95215}\label{map_8h_a8035e709fa40f44aa8b256e917d95215}} 
+\index{map.h@{map.h}!djb2@{djb2}}
+\index{djb2@{djb2}!map.h@{map.h}}
+\doxysubsubsection{\texorpdfstring{djb2()}{djb2()}}
+{\footnotesize\ttfamily unsigned long djb2 (\begin{DoxyParamCaption}\item[{unsigned char $\ast$}]{str }\end{DoxyParamCaption})}
+
+
+
+The djb2 hash algorithm. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & The string to hash. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+unsigned long The hash.
+\end{DoxyReturn}
+Hash algorithm devised by Daniel J. Bernstein. N\+O\+TE\+: This has to be changed to suit the datatype used by the hash table. \mbox{\Hypertarget{map_8h_a59069f31be79d2d8cbbe6fa5018dd2e6}\label{map_8h_a59069f31be79d2d8cbbe6fa5018dd2e6}} 
+\index{map.h@{map.h}!map\_create@{map\_create}}
+\index{map\_create@{map\_create}!map.h@{map.h}}
+\doxysubsubsection{\texorpdfstring{map\_create()}{map\_create()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}{map\+\_\+t}}$\ast$ map\+\_\+create (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{common_8h_acbcddb16067e036e809ea7359149ee4a}{cmpfunc\+\_\+t}}}]{cmpfunc,  }\item[{\mbox{\hyperlink{common_8h_ac42ff75a5f0bd95cd98a48cf1a68b4a3}{hashfunc\+\_\+t}}}]{hashfunc }\end{DoxyParamCaption})}
+
+
+
+Creates a new empty hash table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmpfunc} & \\
+\hline
+{\em hashfunc} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+map\+\_\+t$\ast$ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{map_8h_abd71eeb7c2feee874431daa84ad9c0e6}\label{map_8h_abd71eeb7c2feee874431daa84ad9c0e6}} 
+\index{map.h@{map.h}!map\_destroy@{map\_destroy}}
+\index{map\_destroy@{map\_destroy}!map.h@{map.h}}
+\doxysubsubsection{\texorpdfstring{map\_destroy()}{map\_destroy()}}
+{\footnotesize\ttfamily void map\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}{map\+\_\+t}} $\ast$}]{map,  }\item[{void($\ast$)(void $\ast$)}]{destroy\+\_\+key,  }\item[{void($\ast$)(void $\ast$)}]{destroy\+\_\+val }\end{DoxyParamCaption})}
+
+
+
+Destroys the given map. Will also destroy keys and values if functions are supplied. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em map} & The map to destroy. \\
+\hline
+{\em destroy\+\_\+key} & A pointer to a function to destroy the keys. Can be N\+U\+LL. \\
+\hline
+{\em destroy\+\_\+val} & A pointer to a function to destroy the values. Can be N\+U\+LL.\\
+\hline
+\end{DoxyParams}
+The function will destroy keys if the supplied destroy\+\_\+key function is supplied. The function will destroy values if the supplied destroy\+\_\+values function is supplied. If the arguments are N\+U\+LL, the respective field is not touched. \mbox{\Hypertarget{map_8h_a86cabb73ebab7f0a92f4e2cbd970ecf9}\label{map_8h_a86cabb73ebab7f0a92f4e2cbd970ecf9}} 
+\index{map.h@{map.h}!map\_get@{map\_get}}
+\index{map\_get@{map\_get}!map.h@{map.h}}
+\doxysubsubsection{\texorpdfstring{map\_get()}{map\_get()}}
+{\footnotesize\ttfamily void$\ast$ map\+\_\+get (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}{map\+\_\+t}} $\ast$}]{map,  }\item[{void $\ast$}]{key }\end{DoxyParamCaption})}
+
+
+
+Returns the value the given key maps to. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em map} & The map to get the key from. \\
+\hline
+{\em key} & The key to get the value for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ A pointer to the element that the key is mapped to. N\+U\+LL if the entry does not exist. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{map_8h_ad0609e69d1380c6c0cdccdb32846c280}\label{map_8h_ad0609e69d1380c6c0cdccdb32846c280}} 
+\index{map.h@{map.h}!map\_haskey@{map\_haskey}}
+\index{map\_haskey@{map\_haskey}!map.h@{map.h}}
+\doxysubsubsection{\texorpdfstring{map\_haskey()}{map\_haskey()}}
+{\footnotesize\ttfamily int map\+\_\+haskey (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}{map\+\_\+t}} $\ast$}]{map,  }\item[{void $\ast$}]{key }\end{DoxyParamCaption})}
+
+
+
+Check if a key is in the map. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em map} & The map to check. \\
+\hline
+{\em key} & The key to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns 1 if the key is in the map, 0 otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{map_8h_adc2e234d9ada103fe5ac22180216dd07}\label{map_8h_adc2e234d9ada103fe5ac22180216dd07}} 
+\index{map.h@{map.h}!map\_put@{map\_put}}
+\index{map\_put@{map\_put}!map.h@{map.h}}
+\doxysubsubsection{\texorpdfstring{map\_put()}{map\_put()}}
+{\footnotesize\ttfamily void map\+\_\+put (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{map_8h_a3b2ae5fc86c11f192bf536c2f96060c3}{map\+\_\+t}} $\ast$}]{map,  }\item[{void $\ast$}]{key,  }\item[{void $\ast$}]{value }\end{DoxyParamCaption})}
+
+
+
+Maps the given key to the given value. 
+
+\begin{DoxyWarning}{Warning}
+If the given key exists in the map, its value will be overwritten. 
+\end{DoxyWarning}
+
+\begin{DoxyParams}{Parameters}
+{\em map} & The map to insert the new entry into. \\
+\hline
+{\em key} & The key to map. \\
+\hline
+{\em value} & The value to map the key to. \\
+\hline
+\end{DoxyParams}

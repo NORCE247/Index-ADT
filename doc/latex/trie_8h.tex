@@ -1,0 +1,118 @@
+\hypertarget{trie_8h}{}\doxysection{include/trie.h File Reference}
+\label{trie_8h}\index{include/trie.h@{include/trie.h}}
+
+
+Defines a trie.  
+
+
+{\ttfamily \#include \char`\"{}common.\+h\char`\"{}}\newline
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structtrie}{trie}} \mbox{\hyperlink{trie_8h_a26c47b582e806b2f15c873388e13655f}{trie\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{trie_8h_a26c47b582e806b2f15c873388e13655f}{trie\+\_\+t}} $\ast$ \mbox{\hyperlink{trie_8h_a2092f939caf54f4cddaee3f401e0f6fb}{trie\+\_\+create}} ()
+\begin{DoxyCompactList}\small\item\em Allocates an empty trie structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{trie_8h_a19778081b2978ad7942355235b49f6b7}{trie\+\_\+destroy}} (\mbox{\hyperlink{trie_8h_a26c47b582e806b2f15c873388e13655f}{trie\+\_\+t}} $\ast$\mbox{\hyperlink{structtrie}{trie}})
+\begin{DoxyCompactList}\small\item\em Destroys the given trie. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{trie_8h_ad2f2bb9482cf4ea3e1b9b653d4758d7b}{trie\+\_\+insert}} (\mbox{\hyperlink{trie_8h_a26c47b582e806b2f15c873388e13655f}{trie\+\_\+t}} $\ast$\mbox{\hyperlink{structtrie}{trie}}, char $\ast$key, void $\ast$value)
+\begin{DoxyCompactList}\small\item\em Insert a key and value into the trie. \end{DoxyCompactList}\item 
+char $\ast$ \mbox{\hyperlink{trie_8h_a1e107389b6bce39b50b1cc1829303be8}{trie\+\_\+find}} (\mbox{\hyperlink{trie_8h_a26c47b582e806b2f15c873388e13655f}{trie\+\_\+t}} $\ast$t, char $\ast$prefix)
+\begin{DoxyCompactList}\small\item\em Find the closest word starting with prefix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Defines a trie. 
+
+\begin{DoxyAuthor}{Author}
+Morten Grønnesby (\href{mailto:morten.gronnesby@uit.no}{\texttt{ morten.\+gronnesby@uit.\+no}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1
+\end{DoxyVersion}
+Defines a non-\/space optimized trie that uses the english alphabet as radix. 
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{trie_8h_a26c47b582e806b2f15c873388e13655f}\label{trie_8h_a26c47b582e806b2f15c873388e13655f}} 
+\index{trie.h@{trie.h}!trie\_t@{trie\_t}}
+\index{trie\_t@{trie\_t}!trie.h@{trie.h}}
+\doxysubsubsection{\texorpdfstring{trie\_t}{trie\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structtrie}{trie}} \mbox{\hyperlink{trie_8h_a26c47b582e806b2f15c873388e13655f}{trie\+\_\+t}}}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{trie_8h_a2092f939caf54f4cddaee3f401e0f6fb}\label{trie_8h_a2092f939caf54f4cddaee3f401e0f6fb}} 
+\index{trie.h@{trie.h}!trie\_create@{trie\_create}}
+\index{trie\_create@{trie\_create}!trie.h@{trie.h}}
+\doxysubsubsection{\texorpdfstring{trie\_create()}{trie\_create()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{trie_8h_a26c47b582e806b2f15c873388e13655f}{trie\+\_\+t}}$\ast$ trie\+\_\+create (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Allocates an empty trie structure. 
+
+\begin{DoxyReturn}{Returns}
+trie\+\_\+t$\ast$ Pointer to an empty trie 
+\end{DoxyReturn}
+\mbox{\Hypertarget{trie_8h_a19778081b2978ad7942355235b49f6b7}\label{trie_8h_a19778081b2978ad7942355235b49f6b7}} 
+\index{trie.h@{trie.h}!trie\_destroy@{trie\_destroy}}
+\index{trie\_destroy@{trie\_destroy}!trie.h@{trie.h}}
+\doxysubsubsection{\texorpdfstring{trie\_destroy()}{trie\_destroy()}}
+{\footnotesize\ttfamily void trie\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{trie_8h_a26c47b582e806b2f15c873388e13655f}{trie\+\_\+t}} $\ast$}]{trie }\end{DoxyParamCaption})}
+
+
+
+Destroys the given trie. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em trie} & Pointer to the trie to destroy.\\
+\hline
+\end{DoxyParams}
+The given trie will be destroyed. Allocated keys and values will not be destroyed. \mbox{\Hypertarget{trie_8h_a1e107389b6bce39b50b1cc1829303be8}\label{trie_8h_a1e107389b6bce39b50b1cc1829303be8}} 
+\index{trie.h@{trie.h}!trie\_find@{trie\_find}}
+\index{trie\_find@{trie\_find}!trie.h@{trie.h}}
+\doxysubsubsection{\texorpdfstring{trie\_find()}{trie\_find()}}
+{\footnotesize\ttfamily char$\ast$ trie\+\_\+find (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{trie_8h_a26c47b582e806b2f15c873388e13655f}{trie\+\_\+t}} $\ast$}]{t,  }\item[{char $\ast$}]{prefix }\end{DoxyParamCaption})}
+
+
+
+Find the closest word starting with prefix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & Pointer to the trie \\
+\hline
+{\em prefix} & The prefix to search for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+char$\ast$ The closest word starting with prefix. N\+U\+LL if no word was found. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{trie_8h_ad2f2bb9482cf4ea3e1b9b653d4758d7b}\label{trie_8h_ad2f2bb9482cf4ea3e1b9b653d4758d7b}} 
+\index{trie.h@{trie.h}!trie\_insert@{trie\_insert}}
+\index{trie\_insert@{trie\_insert}!trie.h@{trie.h}}
+\doxysubsubsection{\texorpdfstring{trie\_insert()}{trie\_insert()}}
+{\footnotesize\ttfamily int trie\+\_\+insert (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{trie_8h_a26c47b582e806b2f15c873388e13655f}{trie\+\_\+t}} $\ast$}]{trie,  }\item[{char $\ast$}]{key,  }\item[{void $\ast$}]{value }\end{DoxyParamCaption})}
+
+
+
+Insert a key and value into the trie. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em trie} & Reference to the trie. \\
+\hline
+{\em key} & A key to insert, this will be used to create the internal node path. \\
+\hline
+{\em value} & An optional value, this is not used internally in the trie. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns 0 on success and -\/1 on fail.
+\end{DoxyReturn}
+The trie only accepts alphabetical characters, will not insert words containing other symbols. The key is used to insert into the trie, as the index into the nodes array. The key and value reference of the internal nodes will be N\+U\+LL, and the leaf node will contain pointers to the given key and value. 

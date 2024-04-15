@@ -1,0 +1,299 @@
+\hypertarget{linkedlist_8c}{}\doxysection{src/linkedlist.c File Reference}
+\label{linkedlist_8c}\index{src/linkedlist.c@{src/linkedlist.c}}
+{\ttfamily \#include \char`\"{}list.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structlistnode}{listnode}}
+\item 
+struct \mbox{\hyperlink{structlist}{list}}
+\begin{DoxyCompactList}\small\item\em The type of the list. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structlist__iter}{list\+\_\+iter}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structlistnode}{listnode}} \mbox{\hyperlink{linkedlist_8c_addfdc1970e261191f43622aada46e396}{listnode\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$ \mbox{\hyperlink{linkedlist_8c_ad5d7cf5d9aa8093caba795b88ab02bfe}{list\+\_\+create}} (\mbox{\hyperlink{common_8h_acbcddb16067e036e809ea7359149ee4a}{cmpfunc\+\_\+t}} \mbox{\hyperlink{test_8c_ae402a26582ade22b61eb7efb4d58e985}{cmpfunc}})
+\begin{DoxyCompactList}\small\item\em Creates a new empty list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{linkedlist_8c_af04149a6092f6c1960ffe1556fa0e612}{list\+\_\+destroy}} (\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$\mbox{\hyperlink{structlist}{list}})
+\begin{DoxyCompactList}\small\item\em Destroys the given list. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{linkedlist_8c_ada4dd11b630a7ca3d76db0530cfc7348}{list\+\_\+size}} (\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$\mbox{\hyperlink{structlist}{list}})
+\begin{DoxyCompactList}\small\item\em Get the current size of the list. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{linkedlist_8c_a058c970a7fb9e5487cd87d8deeb915db}{list\+\_\+addfirst}} (\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$\mbox{\hyperlink{structlist}{list}}, void $\ast$elem)
+\begin{DoxyCompactList}\small\item\em Adds the given element to the start of the list. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{linkedlist_8c_a4e8498d79d33b265acfac231497ac394}{list\+\_\+addlast}} (\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$\mbox{\hyperlink{structlist}{list}}, void $\ast$elem)
+\begin{DoxyCompactList}\small\item\em Adds the given element to the end of the list. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{linkedlist_8c_a1731dda91a026c1df5640f58fa517476}{list\+\_\+popfirst}} (\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$\mbox{\hyperlink{structlist}{list}})
+\begin{DoxyCompactList}\small\item\em Removes and returns the first element of the list. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{linkedlist_8c_a6f4def3899009e26d5b14011e68d072b}{list\+\_\+poplast}} (\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$\mbox{\hyperlink{structlist}{list}})
+\begin{DoxyCompactList}\small\item\em Removes and returns the last element of the list. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{linkedlist_8c_a1806dcdbadff09253d722b1ab9f5da3a}{list\+\_\+contains}} (\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$\mbox{\hyperlink{structlist}{list}}, void $\ast$elem)
+\begin{DoxyCompactList}\small\item\em Checks whether an element is in the list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{linkedlist_8c_aaabde1ce7ad2237eadb60aee54e04d3a}{list\+\_\+sort}} (\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$\mbox{\hyperlink{structlist}{list}})
+\begin{DoxyCompactList}\small\item\em Sorts the list elements using the compare function. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{list_8h_a532a347278baa4adae2218ca122390ae}{list\+\_\+iter\+\_\+t}} $\ast$ \mbox{\hyperlink{linkedlist_8c_ab0438d692319f876536c7acde19cff29}{list\+\_\+createiter}} (\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$\mbox{\hyperlink{structlist}{list}})
+\begin{DoxyCompactList}\small\item\em Creates a new iterator pointing to the start of the list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{linkedlist_8c_a4d2c7c2cab0ef841e762dfe97f8b6431}{list\+\_\+destroyiter}} (\mbox{\hyperlink{list_8h_a532a347278baa4adae2218ca122390ae}{list\+\_\+iter\+\_\+t}} $\ast$iter)
+\begin{DoxyCompactList}\small\item\em Destroys the given iterator. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{linkedlist_8c_a4a425864beea1b6f539bd9b0ae2cf31a}{list\+\_\+hasnext}} (\mbox{\hyperlink{list_8h_a532a347278baa4adae2218ca122390ae}{list\+\_\+iter\+\_\+t}} $\ast$iter)
+\begin{DoxyCompactList}\small\item\em Check if the list has another element. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{linkedlist_8c_a21debc8825fc63ce7bef93dd4587f851}{list\+\_\+next}} (\mbox{\hyperlink{list_8h_a532a347278baa4adae2218ca122390ae}{list\+\_\+iter\+\_\+t}} $\ast$iter)
+\begin{DoxyCompactList}\small\item\em Returns the current element of the iterator and advances it one step forward. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{linkedlist_8c_addfdc1970e261191f43622aada46e396}\label{linkedlist_8c_addfdc1970e261191f43622aada46e396}} 
+\index{linkedlist.c@{linkedlist.c}!listnode\_t@{listnode\_t}}
+\index{listnode\_t@{listnode\_t}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{listnode\_t}{listnode\_t}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structlistnode}{listnode}} \mbox{\hyperlink{linkedlist_8c_addfdc1970e261191f43622aada46e396}{listnode\+\_\+t}}}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{linkedlist_8c_a058c970a7fb9e5487cd87d8deeb915db}\label{linkedlist_8c_a058c970a7fb9e5487cd87d8deeb915db}} 
+\index{linkedlist.c@{linkedlist.c}!list\_addfirst@{list\_addfirst}}
+\index{list\_addfirst@{list\_addfirst}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_addfirst()}{list\_addfirst()}}
+{\footnotesize\ttfamily int list\+\_\+addfirst (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$}]{list,  }\item[{void $\ast$}]{elem }\end{DoxyParamCaption})}
+
+
+
+Adds the given element to the start of the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & The list to add the element to. \\
+\hline
+{\em elem} & The element to add. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns 1 on success, returns 0 if the operation fails. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{linkedlist_8c_a4e8498d79d33b265acfac231497ac394}\label{linkedlist_8c_a4e8498d79d33b265acfac231497ac394}} 
+\index{linkedlist.c@{linkedlist.c}!list\_addlast@{list\_addlast}}
+\index{list\_addlast@{list\_addlast}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_addlast()}{list\_addlast()}}
+{\footnotesize\ttfamily int list\+\_\+addlast (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$}]{list,  }\item[{void $\ast$}]{elem }\end{DoxyParamCaption})}
+
+
+
+Adds the given element to the end of the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & The list to add the element to. \\
+\hline
+{\em elem} & The element to add. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns 1 on success, returns 0 if the operation fails. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{linkedlist_8c_a1806dcdbadff09253d722b1ab9f5da3a}\label{linkedlist_8c_a1806dcdbadff09253d722b1ab9f5da3a}} 
+\index{linkedlist.c@{linkedlist.c}!list\_contains@{list\_contains}}
+\index{list\_contains@{list\_contains}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_contains()}{list\_contains()}}
+{\footnotesize\ttfamily int list\+\_\+contains (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$}]{list,  }\item[{void $\ast$}]{elem }\end{DoxyParamCaption})}
+
+
+
+Checks whether an element is in the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & The list to check. \\
+\hline
+{\em elem} & The element to find. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns 1 if the element is in the list, 0 otherwise.
+\end{DoxyReturn}
+The function uses the comparison function in the list struct. \mbox{\Hypertarget{linkedlist_8c_ad5d7cf5d9aa8093caba795b88ab02bfe}\label{linkedlist_8c_ad5d7cf5d9aa8093caba795b88ab02bfe}} 
+\index{linkedlist.c@{linkedlist.c}!list\_create@{list\_create}}
+\index{list\_create@{list\_create}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_create()}{list\_create()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}}$\ast$ list\+\_\+create (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{common_8h_acbcddb16067e036e809ea7359149ee4a}{cmpfunc\+\_\+t}}}]{cmpfunc }\end{DoxyParamCaption})}
+
+
+
+Creates a new empty list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmpfunc} & The compare function to use for the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+list\+\_\+t$\ast$ A pointer to the allocated list.
+\end{DoxyReturn}
+The comparison function should return the following values\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{0 -\/> a == b}
+\DoxyCodeLine{< 0 -\/> a < b}
+\DoxyCodeLine{> 0 -\/> a > b}
+\end{DoxyCode}
+ \mbox{\Hypertarget{linkedlist_8c_ab0438d692319f876536c7acde19cff29}\label{linkedlist_8c_ab0438d692319f876536c7acde19cff29}} 
+\index{linkedlist.c@{linkedlist.c}!list\_createiter@{list\_createiter}}
+\index{list\_createiter@{list\_createiter}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_createiter()}{list\_createiter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{list_8h_a532a347278baa4adae2218ca122390ae}{list\+\_\+iter\+\_\+t}}$\ast$ list\+\_\+createiter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+
+
+Creates a new iterator pointing to the start of the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & The list to iterate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+list\+\_\+iter\+\_\+t$\ast$ A pointer to a list iterator. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{linkedlist_8c_af04149a6092f6c1960ffe1556fa0e612}\label{linkedlist_8c_af04149a6092f6c1960ffe1556fa0e612}} 
+\index{linkedlist.c@{linkedlist.c}!list\_destroy@{list\_destroy}}
+\index{list\_destroy@{list\_destroy}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_destroy()}{list\_destroy()}}
+{\footnotesize\ttfamily void list\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+
+
+Destroys the given list. 
+
+\begin{DoxyWarning}{Warning}
+Subsequently accessing the list leads to undefined behaviour. The elements of the list are not destroyed. 
+\end{DoxyWarning}
+
+\begin{DoxyParams}{Parameters}
+{\em list} & The list to deallocate. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{linkedlist_8c_a4d2c7c2cab0ef841e762dfe97f8b6431}\label{linkedlist_8c_a4d2c7c2cab0ef841e762dfe97f8b6431}} 
+\index{linkedlist.c@{linkedlist.c}!list\_destroyiter@{list\_destroyiter}}
+\index{list\_destroyiter@{list\_destroyiter}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_destroyiter()}{list\_destroyiter()}}
+{\footnotesize\ttfamily void list\+\_\+destroyiter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{list_8h_a532a347278baa4adae2218ca122390ae}{list\+\_\+iter\+\_\+t}} $\ast$}]{iter }\end{DoxyParamCaption})}
+
+
+
+Destroys the given iterator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em iter} & The iterator to deallocate. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{linkedlist_8c_a4a425864beea1b6f539bd9b0ae2cf31a}\label{linkedlist_8c_a4a425864beea1b6f539bd9b0ae2cf31a}} 
+\index{linkedlist.c@{linkedlist.c}!list\_hasnext@{list\_hasnext}}
+\index{list\_hasnext@{list\_hasnext}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_hasnext()}{list\_hasnext()}}
+{\footnotesize\ttfamily int list\+\_\+hasnext (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{list_8h_a532a347278baa4adae2218ca122390ae}{list\+\_\+iter\+\_\+t}} $\ast$}]{iter }\end{DoxyParamCaption})}
+
+
+
+Check if the list has another element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em iter} & The iter to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns 1 if there are more elements, 0 if the iterator is at the end. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{linkedlist_8c_a21debc8825fc63ce7bef93dd4587f851}\label{linkedlist_8c_a21debc8825fc63ce7bef93dd4587f851}} 
+\index{linkedlist.c@{linkedlist.c}!list\_next@{list\_next}}
+\index{list\_next@{list\_next}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_next()}{list\_next()}}
+{\footnotesize\ttfamily void$\ast$ list\+\_\+next (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{list_8h_a532a347278baa4adae2218ca122390ae}{list\+\_\+iter\+\_\+t}} $\ast$}]{iter }\end{DoxyParamCaption})}
+
+
+
+Returns the current element of the iterator and advances it one step forward. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em iter} & The iterator of the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ The current element pointed to by the iterator. N\+U\+LL if there are no more elements. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{linkedlist_8c_a1731dda91a026c1df5640f58fa517476}\label{linkedlist_8c_a1731dda91a026c1df5640f58fa517476}} 
+\index{linkedlist.c@{linkedlist.c}!list\_popfirst@{list\_popfirst}}
+\index{list\_popfirst@{list\_popfirst}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_popfirst()}{list\_popfirst()}}
+{\footnotesize\ttfamily void$\ast$ list\+\_\+popfirst (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+
+
+Removes and returns the first element of the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & The list to remove the element from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ The pointer to the element. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{linkedlist_8c_a6f4def3899009e26d5b14011e68d072b}\label{linkedlist_8c_a6f4def3899009e26d5b14011e68d072b}} 
+\index{linkedlist.c@{linkedlist.c}!list\_poplast@{list\_poplast}}
+\index{list\_poplast@{list\_poplast}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_poplast()}{list\_poplast()}}
+{\footnotesize\ttfamily void$\ast$ list\+\_\+poplast (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+
+
+Removes and returns the last element of the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & The list to remove the element from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ The pointer to the element. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{linkedlist_8c_ada4dd11b630a7ca3d76db0530cfc7348}\label{linkedlist_8c_ada4dd11b630a7ca3d76db0530cfc7348}} 
+\index{linkedlist.c@{linkedlist.c}!list\_size@{list\_size}}
+\index{list\_size@{list\_size}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_size()}{list\_size()}}
+{\footnotesize\ttfamily int list\+\_\+size (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+
+
+Get the current size of the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & The list to get the size of. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int The size of the list, ie. the number of elements. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{linkedlist_8c_aaabde1ce7ad2237eadb60aee54e04d3a}\label{linkedlist_8c_aaabde1ce7ad2237eadb60aee54e04d3a}} 
+\index{linkedlist.c@{linkedlist.c}!list\_sort@{list\_sort}}
+\index{list\_sort@{list\_sort}!linkedlist.c@{linkedlist.c}}
+\doxysubsubsection{\texorpdfstring{list\_sort()}{list\_sort()}}
+{\footnotesize\ttfamily void list\+\_\+sort (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+
+
+Sorts the list elements using the compare function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & The list to sort. \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,208 @@
+\hypertarget{common_8c}{}\doxysection{src/common.c File Reference}
+\label{common_8c}\index{src/common.c@{src/common.c}}
+{\ttfamily \#include \char`\"{}common.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}list.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}printing.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$dirent.\+h$>$}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$sys/stat.\+h$>$}\newline
+{\ttfamily \#include $<$sys/time.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{common_8c_a1b17ed25191e9a711c7c63b3f4825042}{tokenize\+\_\+file}} (const char $\ast$filename, \mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$\mbox{\hyperlink{structlist}{list}})
+\begin{DoxyCompactList}\small\item\em Reads the given file and parses it into words (tokens). \end{DoxyCompactList}\item 
+char $\ast$ \mbox{\hyperlink{common_8c_a34e24958a429ee454bd8288589417b97}{concatenate\+\_\+strings}} (int num\+\_\+strings, const char $\ast$first,...)
+\begin{DoxyCompactList}\small\item\em Concatenates a number of strings. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}} $\ast$ \mbox{\hyperlink{common_8c_acfe207ea4b2360d705f3b7158a3c4625}{find\+\_\+files}} (const char $\ast$root\+\_\+dir)
+\begin{DoxyCompactList}\small\item\em Recursively finds the names of all files under the given root directory. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{common_8c_a0bae12cbe51b96df5ec944d2490e77d0}{compare\+\_\+strings}} (void $\ast$a, void $\ast$b)
+\begin{DoxyCompactList}\small\item\em Compares two strings using strcmp. \end{DoxyCompactList}\item 
+unsigned long \mbox{\hyperlink{common_8c_a5672d34d3a29647da245d1d39f9067e9}{hash\+\_\+string}} (void $\ast$str)
+\begin{DoxyCompactList}\small\item\em Hashes a string. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{common_8c_abaff33dab72b301fe8076bb3abbd51e4}{compare\+\_\+pointers}} (void $\ast$a, void $\ast$b)
+\begin{DoxyCompactList}\small\item\em Compares two pointers. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{common_8c_a26c1e6dac955288160810d1f0752a0ab}{is\+\_\+valid\+\_\+directory}} (const char $\ast$dirpath)
+\begin{DoxyCompactList}\small\item\em Checks if the given path is a valid directory. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{common_8c_a595a3bec9205ca41c9e2fa46857405be}{is\+\_\+valid\+\_\+file}} (const char $\ast$filepath)
+\begin{DoxyCompactList}\small\item\em Checks if the given path is a valid regular file. \end{DoxyCompactList}\item 
+unsigned long long \mbox{\hyperlink{common_8c_ac8bf83e8c76bc642052836d01c449858}{gettime}} ()
+\begin{DoxyCompactList}\small\item\em Get the current time in microseconds. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{common_8c_abaff33dab72b301fe8076bb3abbd51e4}\label{common_8c_abaff33dab72b301fe8076bb3abbd51e4}} 
+\index{common.c@{common.c}!compare\_pointers@{compare\_pointers}}
+\index{compare\_pointers@{compare\_pointers}!common.c@{common.c}}
+\doxysubsubsection{\texorpdfstring{compare\_pointers()}{compare\_pointers()}}
+{\footnotesize\ttfamily int compare\+\_\+pointers (\begin{DoxyParamCaption}\item[{void $\ast$}]{a,  }\item[{void $\ast$}]{b }\end{DoxyParamCaption})}
+
+
+
+Compares two pointers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & The first pointer. \\
+\hline
+{\em b} & The second pointer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns 0 if the pointers are equal. Returns $>$ 0 if a is larger, returns $<$ 0 if b is larger.
+\end{DoxyReturn}
+Compares two pointers ordering, i.\+e. by comparing the actual addresses that they point to. \mbox{\Hypertarget{common_8c_a0bae12cbe51b96df5ec944d2490e77d0}\label{common_8c_a0bae12cbe51b96df5ec944d2490e77d0}} 
+\index{common.c@{common.c}!compare\_strings@{compare\_strings}}
+\index{compare\_strings@{compare\_strings}!common.c@{common.c}}
+\doxysubsubsection{\texorpdfstring{compare\_strings()}{compare\_strings()}}
+{\footnotesize\ttfamily int compare\+\_\+strings (\begin{DoxyParamCaption}\item[{void $\ast$}]{a,  }\item[{void $\ast$}]{b }\end{DoxyParamCaption})}
+
+
+
+Compares two strings using strcmp. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & The first string. \\
+\hline
+{\em b} & The second string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns 0 if the strings are equal. Returns another number otherwise (both negative and positive). 
+\end{DoxyReturn}
+\mbox{\Hypertarget{common_8c_a34e24958a429ee454bd8288589417b97}\label{common_8c_a34e24958a429ee454bd8288589417b97}} 
+\index{common.c@{common.c}!concatenate\_strings@{concatenate\_strings}}
+\index{concatenate\_strings@{concatenate\_strings}!common.c@{common.c}}
+\doxysubsubsection{\texorpdfstring{concatenate\_strings()}{concatenate\_strings()}}
+{\footnotesize\ttfamily char$\ast$ concatenate\+\_\+strings (\begin{DoxyParamCaption}\item[{int}]{num\+\_\+strings,  }\item[{const char $\ast$}]{first,  }\item[{}]{... }\end{DoxyParamCaption})}
+
+
+
+Concatenates a number of strings. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+strings} & Number of strings to concatenate. \\
+\hline
+{\em first} & The first string to concatenate. \\
+\hline
+{\em ...} & Any number of strings to concatenate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+char$\ast$ The complete concatenated string (allocated using malloc). 
+\end{DoxyReturn}
+\mbox{\Hypertarget{common_8c_acfe207ea4b2360d705f3b7158a3c4625}\label{common_8c_acfe207ea4b2360d705f3b7158a3c4625}} 
+\index{common.c@{common.c}!find\_files@{find\_files}}
+\index{find\_files@{find\_files}!common.c@{common.c}}
+\doxysubsubsection{\texorpdfstring{find\_files()}{find\_files()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{list_8h_a15376354e4e8b4f1732e9df17f30786c}{list\+\_\+t}}$\ast$ find\+\_\+files (\begin{DoxyParamCaption}\item[{const char $\ast$}]{root }\end{DoxyParamCaption})}
+
+
+
+Recursively finds the names of all files under the given root directory. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em root} & The root directory to start scanning from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+struct list$\ast$ A list of filenames scanned recursively from the root directory. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{common_8c_ac8bf83e8c76bc642052836d01c449858}\label{common_8c_ac8bf83e8c76bc642052836d01c449858}} 
+\index{common.c@{common.c}!gettime@{gettime}}
+\index{gettime@{gettime}!common.c@{common.c}}
+\doxysubsubsection{\texorpdfstring{gettime()}{gettime()}}
+{\footnotesize\ttfamily unsigned long long gettime (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the current time in microseconds. 
+
+\begin{DoxyReturn}{Returns}
+unsigned long long The current U\+N\+IX time in microseconds (may wrap around). 
+\end{DoxyReturn}
+\mbox{\Hypertarget{common_8c_a5672d34d3a29647da245d1d39f9067e9}\label{common_8c_a5672d34d3a29647da245d1d39f9067e9}} 
+\index{common.c@{common.c}!hash\_string@{hash\_string}}
+\index{hash\_string@{hash\_string}!common.c@{common.c}}
+\doxysubsubsection{\texorpdfstring{hash\_string()}{hash\_string()}}
+{\footnotesize\ttfamily unsigned long hash\+\_\+string (\begin{DoxyParamCaption}\item[{void $\ast$}]{s }\end{DoxyParamCaption})}
+
+
+
+Hashes a string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & A null terminated input string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+unsigned long The hash of the string. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{common_8c_a26c1e6dac955288160810d1f0752a0ab}\label{common_8c_a26c1e6dac955288160810d1f0752a0ab}} 
+\index{common.c@{common.c}!is\_valid\_directory@{is\_valid\_directory}}
+\index{is\_valid\_directory@{is\_valid\_directory}!common.c@{common.c}}
+\doxysubsubsection{\texorpdfstring{is\_valid\_directory()}{is\_valid\_directory()}}
+{\footnotesize\ttfamily int is\+\_\+valid\+\_\+directory (\begin{DoxyParamCaption}\item[{const char $\ast$}]{dirpath }\end{DoxyParamCaption})}
+
+
+
+Checks if the given path is a valid directory. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dirpath} & The directory path to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int returns 1 if valid, 0 otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{common_8c_a595a3bec9205ca41c9e2fa46857405be}\label{common_8c_a595a3bec9205ca41c9e2fa46857405be}} 
+\index{common.c@{common.c}!is\_valid\_file@{is\_valid\_file}}
+\index{is\_valid\_file@{is\_valid\_file}!common.c@{common.c}}
+\doxysubsubsection{\texorpdfstring{is\_valid\_file()}{is\_valid\_file()}}
+{\footnotesize\ttfamily int is\+\_\+valid\+\_\+file (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filepath }\end{DoxyParamCaption})}
+
+
+
+Checks if the given path is a valid regular file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filepath} & The file path to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns 1 if valid, 0 otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{common_8c_a1b17ed25191e9a711c7c63b3f4825042}\label{common_8c_a1b17ed25191e9a711c7c63b3f4825042}} 
+\index{common.c@{common.c}!tokenize\_file@{tokenize\_file}}
+\index{tokenize\_file@{tokenize\_file}!common.c@{common.c}}
+\doxysubsubsection{\texorpdfstring{tokenize\_file()}{tokenize\_file()}}
+{\footnotesize\ttfamily void tokenize\+\_\+file (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filepath,  }\item[{struct \mbox{\hyperlink{structlist}{list}} $\ast$}]{list }\end{DoxyParamCaption})}
+
+
+
+Reads the given file and parses it into words (tokens). 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em filepath} & The string containing the path to the file to be read. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em list} & The list to put the tokens into.\\
+\hline
+\end{DoxyParams}
+Function opens and reads the given filepath and breaks the text into words (tokens). All tokens are put into the given list in the order that they occur.
+
+The tokenizer preserves the following special characters\+: \char`\"{}$\ast$ \textbackslash{}n\textbackslash{}t\textbackslash{}\char`\"{}.,!\+:;?()-\/$\ast$"
+
+In addition to each word, the tokenizer inserts whitespace in between each token that is not a special character. This is to accurately represnt the text in the file. 

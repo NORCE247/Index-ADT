@@ -1,0 +1,38 @@
+\hypertarget{map_8h_source}{}\doxysection{map.\+h}
+\label{map_8h_source}\index{include/map.h@{include/map.h}}
+\mbox{\hyperlink{map_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#ifndef MAP\_H}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#define MAP\_H}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{common_8h}{common.h}}"{}}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{15 \textcolor{keyword}{struct }\mbox{\hyperlink{structmap}{map}};}
+\DoxyCodeLine{16 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{structmap}{map}} \mbox{\hyperlink{structmap}{map\_t}};}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 }
+\DoxyCodeLine{26 \mbox{\hyperlink{structmap}{map\_t}} *\mbox{\hyperlink{map_8h_a99dd92ea4b4eed25058049aa4813e2e7}{map\_create}}(\mbox{\hyperlink{common_8h_acbcddb16067e036e809ea7359149ee4a}{cmpfunc\_t}} \mbox{\hyperlink{test_8c_ae402a26582ade22b61eb7efb4d58e985}{cmpfunc}}, \mbox{\hyperlink{common_8h_ac42ff75a5f0bd95cd98a48cf1a68b4a3}{hashfunc\_t}} \mbox{\hyperlink{structmap_a459d7dda60fb953d7e9cc12341d1086e}{hashfunc}});}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{41 \textcolor{keywordtype}{void} \mbox{\hyperlink{map_8h_abd71eeb7c2feee874431daa84ad9c0e6}{map\_destroy}}(\mbox{\hyperlink{structmap}{map\_t}} *\mbox{\hyperlink{structmap}{map}}, \textcolor{keywordtype}{void} (*destroy\_key)(\textcolor{keywordtype}{void} *), \textcolor{keywordtype}{void} (*destroy\_val)(\textcolor{keywordtype}{void} *));}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{51 \textcolor{keywordtype}{void} \mbox{\hyperlink{map_8h_adc2e234d9ada103fe5ac22180216dd07}{map\_put}}(\mbox{\hyperlink{structmap}{map\_t}} *\mbox{\hyperlink{structmap}{map}}, \textcolor{keywordtype}{void} *key, \textcolor{keywordtype}{void} *value);}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 }
+\DoxyCodeLine{62 \textcolor{keywordtype}{int} \mbox{\hyperlink{map_8h_ad0609e69d1380c6c0cdccdb32846c280}{map\_haskey}}(\mbox{\hyperlink{structmap}{map\_t}} *\mbox{\hyperlink{structmap}{map}}, \textcolor{keywordtype}{void} *key);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 }
+\DoxyCodeLine{73 \textcolor{keywordtype}{void} *\mbox{\hyperlink{map_8h_afed92c172efa55ecc3c386b047345558}{map\_get}}(\mbox{\hyperlink{structmap}{map\_t}} *\mbox{\hyperlink{structmap}{map}}, \textcolor{keywordtype}{void} *key);}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{85 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{map_8h_a8035e709fa40f44aa8b256e917d95215}{djb2}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} *str);}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
