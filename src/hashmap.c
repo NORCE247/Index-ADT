@@ -15,7 +15,7 @@
 struct mapentry
 {
     void *key;
-    list_t *list;
+    list_t *list; /** @MODIFIED include linked list */
     struct mapentry *next;
 };
 
@@ -44,7 +44,7 @@ static mapentry_t *newentry(void *key, search_hit_t *hits, mapentry_t *next)
 
     e->key = key;
 
-    /* MODIFIED: Create and insert the first elem to the Linked list */
+    /** @MODIFIED : Create and insert the first elem to the Linked list */
     e->list = list_create(NULL);
     list_addfirst(e->list,hits);
     e->next = next;
@@ -69,7 +69,7 @@ map_t *map_create(cmpfunc_t cmpfunc, hashfunc_t hashfunc)
     map->hashfunc = hashfunc;
     map->size = 0;
 
-    /* MODIFIED SIZE AS TO AVOID EXTENSION OF MAP */
+    /** @MODIFIED SIZE: TO AVOID EXTENSION OF MAP */
     map->numbuckets = 800000;
     map->buckets = calloc(map->numbuckets, sizeof(mapentry_t *));
     if (map->buckets == NULL)
@@ -119,7 +119,6 @@ void map_destroy(map_t *map, void (*destroy_key)(void *), void (*destroy_val)(vo
     free(map);
 }
 
-/* MODIFIED: REMOVED MAP GROW METHOD*/
 
 /** @param hits : represent search hits, where it will be store in linked list*/
 void map_put(map_t *map, void *key, search_hit_t *hits)
@@ -139,7 +138,7 @@ void map_put(map_t *map, void *key, search_hit_t *hits)
 
     }
     else
-    {   /* Insert the hits result into the list */
+    {   /**@MODIFIED Insert the hits result into the list */
         list_addfirst(e->list, hits);
     }
 }
@@ -182,7 +181,7 @@ void *map_get(map_t *map, void *key)
     }
     else
     {
-        // Return the linked list where it contains search hits
+        /** @MODIFIED Return the linked list where it contains search hits */
         return e->list;
     }
 }

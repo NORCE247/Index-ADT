@@ -138,9 +138,7 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
             // Insert a word into the array.
             idx->stringArray[i] = word;
 
-            /**
-             * @note VERSION 2 index.c line:130-135
-             **/
+            /** @VERSION 2 index.c line:143-152 **/
             //Define word location and length.
             search_hit_t *hit = malloc(sizeof(search_hit_t));
             hit->location = i;
@@ -182,9 +180,7 @@ search_result_t *index_find(index_t *idx, const char *query)
     search_result_t *searchResult = create_search_result_t(idx);
     bool found = false;
 
-    /**
-     * @note VERSION 2
-     */
+    /** @VERSION 2 */
     // Check if there is any search hits
     list_t *hits = map_get(idx->map, (char*)query);
     if (hits != NULL) {
@@ -192,9 +188,7 @@ search_result_t *index_find(index_t *idx, const char *query)
         searchResult->hitsArray = hits;
     }
 
-    /**
-     * @note VERSION 1
-     *
+    /** @VERSION 1
 
     // Iterate through the words in the document.
     for (int i = 0; i < idx->size; ++i) {

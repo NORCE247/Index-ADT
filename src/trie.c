@@ -120,7 +120,7 @@ int trie_insert(trie_t *trie, char *key, void *value)
 
     node_t *iter = trie->root;
 
-    // Modified:
+    /**@MODIFIED: */
     // len of char is needed to define the number of leftover chars when insert is done.
     int len = strlen(key);
 
@@ -142,7 +142,7 @@ int trie_insert(trie_t *trie, char *key, void *value)
         // We only use lowercase letters (case-insensitive)
         if (iter->children[ASCII_TO_IDX(tolower(key[i]))] == NULL)
         {
-            // Modified:
+            /**@MODIFIED: */
             // the parameter for node_create,
             // by defined the integer type that represent the number of leftover char.
             node_t *new = node_create(NULL,nr);
@@ -152,7 +152,7 @@ int trie_insert(trie_t *trie, char *key, void *value)
             }
             iter->children[ASCII_TO_IDX(tolower(key[i]))] = new;
         }
-        // @note: Modified
+        /**@MODIFIED: */
         // overwrites the node_t value to represent the number of leftover chars.
         iter->value = nr;
         iter = iter->children[ASCII_TO_IDX(tolower(key[i]))];
@@ -225,7 +225,7 @@ char *trie_find(trie_t *trie, char *key)
     // Find the index that's holds the smallest value in the collected array.
     int minValueIndex = min_value(valueCollector);
 
-    // If there is more characters below, use @minValueIndex as a path to find other words.
+    /* If there is more characters below, use @minValueIndex as a path to find other words. */
     if (current->value)
     { goto HaveMoreChars; } else if (current->key) { return current->key; }
 
@@ -236,7 +236,7 @@ char *trie_find(trie_t *trie, char *key)
     // Traverse down to the end of the chosen path, to find the key.
     while (current->children[currentIndex] == NULL && currentIndex < 26) {
 
-        // If the next index have a defined key, its indicates as a null-terminal word.
+        /* If the next index have a defined key, its indicates as a null-terminal word. */
         currentIndex++;
         if (current->children[currentIndex]) {
             if (current->children[currentIndex]->key) {
