@@ -246,13 +246,15 @@ search_result_t *index_find(index_t *idx, const char *query)
     search_result_t *searchResult = create_search_result_t(idx);
     bool found = false;
 
+
+    /** @VERSION 2 */
     /* Check the number of string*/
     list_t *tokens = list_create(NULL);
     parse_word((char*)query, tokens);
 
     if (list_size(tokens) > 1) {
         search_result_t *main_word = index_find(idx, list_popfirst(tokens));
-        search_result_t *array = malloc(sizeof (search_result_t));
+        search_result_t *array;
         int str_len = list_size(tokens);
         int i = 0;
 
@@ -269,12 +271,14 @@ search_result_t *index_find(index_t *idx, const char *query)
         //Create a new search_result_t
         search_result_t *searchResult_new = main_word;
 
+        if (idx->next) {
+            searchResult_new->next = index_find(idx->next, query);
+        }
         return searchResult_new;
-
     }
 
 
-    /** @VERSION 2 */
+
     // Check if there is any search hits
     list_t *hits = map_get(idx->map, (char*)query);
     if (hits != NULL) {
@@ -318,7 +322,6 @@ search_result_t *index_find(index_t *idx, const char *query)
         }
 
     } else {
-
         /* Find query on the nest documents, if current Search Result is none,
          * store data on the current, else stores on the next Search Result */
         if (searchResult != NULL ){
@@ -357,8 +360,11 @@ search_result_t *diff_checker(search_result_t *main, search_result_t *sub, int i
                 break;
 
             } else if (current_hits->location == current_hits_sub->location-i){
-                current_hits->len = str_len;
-                list_addlast(res, current_hits);
+
+                search_hit_t *new = malloc(sizeof (search_hit_t));
+                new->location = current_hits->location;
+                new->len = str_len;
+                list_addlast(res, new);
                 break;
             }
 
@@ -426,14 +432,15 @@ search_hit_t *result_next(search_result_t *res)
         if (list_hasnext(res->hitsArray)) {
 
             hitsData = list_next(res->hitsArray);
-        }
-        /* if there is no more result, marked as accessed and check the next existing file */
-        if (hitsData == NULL){
-            res->accessedCounter = 3;
 
+        } else {
+
+            res->accessedCounter = 3;
+            /* if there is no more result, marked as accessed and check the next existing file */
             if (res->next != NULL) {
                 hitsData = result_next(res->next);
             }
+
         }
 
     // return the next existing data, when the current file have been used.
