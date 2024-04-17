@@ -15,7 +15,7 @@ const char *example[15] = {
     " ", 
     "dolor",
     " ",
-    "sit"
+    "sit",
     " ", 
     "amet",
     ",",

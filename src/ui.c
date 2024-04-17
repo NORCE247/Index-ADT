@@ -304,7 +304,7 @@ static void ui_display_results_content(char **content, int content_length, searc
 
     for (int i = from; i < content_length; i++)
     {
-        if (i == cur_pos->location)
+        if (i >= cur_pos->location && i <= cur_pos->location+cur_pos->len)
         {
             attron(COLOR_PAIR(1));
             printw("%s", content[i]);

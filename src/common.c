@@ -44,7 +44,7 @@ static void parse_word(char *token, list_t *l)
 
     char *start = token;
     char *special_char = strpbrk(start, match_chars);
-    
+
     // No special characters in the token
     if (special_char == NULL)
     {
@@ -57,11 +57,11 @@ static void parse_word(char *token, list_t *l)
         list_addlast(l, word);
         return;
     }
-    
+
     // Handle special characters at the start and end of the token
     while (*start != '\0')
     {
-        
+
         if (special_char == start)  // Encountered special character at the start of the token
         {
             // Allocate len + 1, which will null terminate the string when using calloc

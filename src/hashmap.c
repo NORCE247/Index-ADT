@@ -139,7 +139,7 @@ void map_put(map_t *map, void *key, search_hit_t *hits)
     }
     else
     {   /**@MODIFIED Insert the hits result into the list */
-        list_addfirst(e->list, hits);
+        list_addlast(e->list, hits);
     }
 }
 

@@ -31,7 +31,6 @@ typedef void (*exchfunc_t)(void *, void *);
 typedef unsigned long (*hashfunc_t)(unsigned char *);
 
 
-
 /**
  * @brief Reads the given file and parses it into words (tokens).
  * 

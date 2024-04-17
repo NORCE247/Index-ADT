@@ -12,12 +12,14 @@
 #include "common.h"
 
 
+
+
 /**
  * @brief The type of the list.
  * @struct list
  */
 typedef struct list list_t;
-
+typedef struct listnode listnode_t;
 
 /**
  * @brief Creates a new empty list.
@@ -150,5 +152,6 @@ int list_hasnext(list_iter_t *iter);
  * @return void* The current element pointed to by the iterator. NULL if there are no more elements.
  */
 void *list_next(list_iter_t *iter);
+
 
 #endif

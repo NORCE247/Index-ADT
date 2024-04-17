@@ -7,6 +7,72 @@
 #include <ctype.h>
 #include <stdio.h>
 
+static void parse_word(char *token, list_t *l)
+{
+    // Special characters to match and include
+    char match_chars[] = " \n\t\".,!:;?()-";
+
+    // Not a valid string
+    if (token == NULL)
+    {
+        return;
+    }
+
+    char *start = token;
+    char *special_char = strpbrk(start, match_chars);
+
+    // No special characters in the token
+    if (special_char == NULL)
+    {
+        char *word = strdup(token);
+        if (word == NULL)
+        {
+            goto error;
+        }
+
+        list_addlast(l, word);
+        return;
+    }
+
+    // Handle special characters at the start and end of the token
+    while (*start != '\0')
+    {
+
+        if (special_char == start)  // Encountered special character at the start of the token
+        {
+            // Allocate len + 1, which will null terminate the string when using calloc
+            char *word = (char *)calloc(2, sizeof(char));
+            word[0] = *special_char;
+
+            list_addlast(l, word);
+            start++;
+            special_char = strpbrk(start, match_chars);
+        }
+        else if (special_char > start) // Encountered special character at the end of the token
+        {
+            int len = special_char - start;
+
+            // Allocate len, which will null terminate the string when using calloc
+            char *word = (char *)calloc(len+1, sizeof(char));
+            memcpy(word, start, len);
+            list_addlast(l, word);
+            start = special_char;
+        }
+        else if (special_char == NULL) // Still a word left after token
+        {
+            char *word = strdup(start);
+            list_addlast(l, word);
+            start += strlen(word);
+        }
+    }
+
+    return;
+
+    error:
+    ERROR_PRINT("Error occured parsing the token %s\n", token);
+    return;
+}
+
 
 /**
  * @brief This structure represents an index entry for a document.
@@ -66,7 +132,7 @@ static search_result_t *create_search_result_t(index_t *idx) {
     }
 
     new->index = idx;
-    new->hitsArray = list_create(NULL);
+    new->hitsArray = NULL;
     new->accessedCounter = 0;
     return new;
 }
@@ -142,7 +208,7 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
             //Define word location and length.
             search_hit_t *hit = malloc(sizeof(search_hit_t));
             hit->location = i;
-            hit->len = strlen(word);
+            hit->len = 0;
 
             // Convert string to lower case
             char *cpyWord = strdup(word);
@@ -180,6 +246,34 @@ search_result_t *index_find(index_t *idx, const char *query)
     search_result_t *searchResult = create_search_result_t(idx);
     bool found = false;
 
+    /* Check the number of string*/
+    list_t *tokens = list_create(NULL);
+    parse_word((char*)query, tokens);
+
+    if (list_size(tokens) > 1) {
+        search_result_t *main_word = index_find(idx, list_popfirst(tokens));
+        search_result_t *array = malloc(sizeof (search_result_t));
+        int str_len = list_size(tokens);
+        int i = 0;
+
+        int size = list_size(tokens);
+        while (size > 0){
+            i++;
+            char *word = list_popfirst(tokens);
+            search_result_t *current_word = index_find(idx, word);
+            array = diff_checker(main_word, current_word, i, str_len, idx);
+            main_word = array;
+            size = list_size(tokens);
+        }
+
+        //Create a new search_result_t
+        search_result_t *searchResult_new = main_word;
+
+        return searchResult_new;
+
+    }
+
+
     /** @VERSION 2 */
     // Check if there is any search hits
     list_t *hits = map_get(idx->map, (char*)query);
@@ -213,7 +307,6 @@ search_result_t *index_find(index_t *idx, const char *query)
     }
      **/
 
-
     if (found) {
 
         // Store the document content.
@@ -234,6 +327,43 @@ search_result_t *index_find(index_t *idx, const char *query)
     }
 
     return searchResult;
+}
+
+search_result_t *diff_checker(search_result_t *main, search_result_t *sub, int i, int str_len, index_t*idx){
+
+    list_iter_t *main_iter = list_createiter(main->hitsArray);
+    list_iter_t *sub_iter = list_createiter(sub->hitsArray);
+    search_result_t *array = create_search_result_t(idx);
+    bool jump = false;
+    while (list_hasnext(main_iter)){
+
+        search_hit_t *current_hits = list_next(main_iter);
+        while (list_hasnext(sub_iter)){
+
+
+            if (jump){
+                goto X;
+            }
+            search_hit_t *current_hits_sub = list_next(sub_iter);
+            X:
+            jump = false;
+            if (current_hits_sub->location-i < current_hits->location){
+                continue;
+
+            } else if (current_hits_sub->location-i > current_hits->location){
+                jump = true;
+                break;
+
+            } else if (current_hits->location == current_hits_sub->location-i){
+                current_hits->len = str_len;
+                list_addlast(array->hitsArray, current_hits);
+                break;
+            }
+
+        }
+    }
+
+    return array;
 }
 
 char *autocomplete(index_t *idx, char *input, size_t size)
@@ -290,7 +420,7 @@ search_hit_t *result_next(search_result_t *res)
     /* Check if there is more hits result on the current file. */
     if (res->accessedCounter == 2){
 
-        hitsData = list_poplast(res->hitsArray);
+        hitsData = list_popfirst(res->hitsArray);
 
         /* if there is no more result, marked as accessed and check the next existing file */
         if (hitsData == NULL){
