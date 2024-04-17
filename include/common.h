@@ -13,7 +13,10 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+
 struct list;
+typedef struct list list_t;
+void parse_word(char *token, list_t *l);
 
 /**
  * @brief Defines the compare function type.

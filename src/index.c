@@ -5,73 +5,7 @@
 #include "trie.h"
 #include "map.h"
 #include <ctype.h>
-#include <stdio.h>
-
-static void parse_word(char *token, list_t *l)
-{
-    // Special characters to match and include
-    char match_chars[] = " \n\t\".,!:;?()-";
-
-    // Not a valid string
-    if (token == NULL)
-    {
-        return;
-    }
-
-    char *start = token;
-    char *special_char = strpbrk(start, match_chars);
-
-    // No special characters in the token
-    if (special_char == NULL)
-    {
-        char *word = strdup(token);
-        if (word == NULL)
-        {
-            goto error;
-        }
-
-        list_addlast(l, word);
-        return;
-    }
-
-    // Handle special characters at the start and end of the token
-    while (*start != '\0')
-    {
-
-        if (special_char == start)  // Encountered special character at the start of the token
-        {
-            // Allocate len + 1, which will null terminate the string when using calloc
-            char *word = (char *)calloc(2, sizeof(char));
-            word[0] = *special_char;
-
-            list_addlast(l, word);
-            start++;
-            special_char = strpbrk(start, match_chars);
-        }
-        else if (special_char > start) // Encountered special character at the end of the token
-        {
-            int len = special_char - start;
-
-            // Allocate len, which will null terminate the string when using calloc
-            char *word = (char *)calloc(len+1, sizeof(char));
-            memcpy(word, start, len);
-            list_addlast(l, word);
-            start = special_char;
-        }
-        else if (special_char == NULL) // Still a word left after token
-        {
-            char *word = strdup(start);
-            list_addlast(l, word);
-            start += strlen(word);
-        }
-    }
-
-    return;
-
-    error:
-    ERROR_PRINT("Error occured parsing the token %s\n", token);
-    return;
-}
+#include "common.h"
 
 
 /**
@@ -238,6 +172,60 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
 
 }
 
+/** @VERSION 1 *//*
+search_result_t *index_find(index_t *idx, const char *query)
+{
+    // Return NULL if there is no document to access.
+    if (idx == NULL || idx->documentName == NULL ) { return NULL; }
+
+    search_result_t *searchResult = create_search_result_t(idx);
+    bool found = false;
+
+    // Iterate through the words in the document.
+    for (int i = 0; i < idx->size; ++i) {
+
+        // Find a match word.
+        char *currentWord = idx->stringArray[i];
+        if (strcasecmp(currentWord, query) == 0) {
+
+            found = true;
+            search_hit_t *hit = malloc(sizeof(search_hit_t));
+            if (hit != NULL) {
+
+                // Define the matched word location and length.
+                hit->location = i;
+                hit->len = strlen(currentWord);
+
+                // Store the search hit data in the linked list.
+                list_addfirst(searchResult->hitsArray, hit);
+
+            } else { return NULL; }
+        }
+    }
+
+    if (found) {
+
+        // Store the document content.
+        searchResult->index = idx;
+
+        // If there is more documents, use recursion to store the next search results
+        if (idx->next != NULL){
+            searchResult->next = index_find(idx->next, query);
+        }
+
+    } else {
+
+        // Find query on the nest documents, if current Search Result is none,
+        // store data on the current, else stores on the next Search Result
+        if (searchResult != NULL ){
+            searchResult->next = index_find(idx->next, query);
+        } else  { searchResult = index_find(idx->next, query); }
+    }
+
+    return searchResult;
+}*/
+
+/** @VERSION 2 **/
 search_result_t *index_find(index_t *idx, const char *query)
 {
     // Return NULL if there is no document to access.
@@ -247,7 +235,6 @@ search_result_t *index_find(index_t *idx, const char *query)
     bool found = false;
 
 
-    /** @VERSION 2 */
     /* Check the number of string*/
     list_t *tokens = list_create(NULL);
     parse_word((char*)query, tokens);
@@ -277,39 +264,12 @@ search_result_t *index_find(index_t *idx, const char *query)
         return searchResult_new;
     }
 
-
-
     // Check if there is any search hits
     list_t *hits = map_get(idx->map, (char*)query);
     if (hits != NULL) {
         found = true;
         searchResult->hitsArray = list_createiter(hits);
     }
-
-    /** @VERSION 1
-
-    // Iterate through the words in the document.
-    for (int i = 0; i < idx->size; ++i) {
-
-        // Find a match word.
-        char *currentWord = idx->stringArray[i];
-        if (strcasecmp(currentWord, query) == 0) {
-
-            found = true;
-            search_hit_t *hit = malloc(sizeof(search_hit_t));
-            if (hit != NULL) {
-
-                // Define the matched word location and length.
-                hit->location = i;
-                hit->len = strlen(currentWord);
-
-                // Store the search hit data in the linked list.
-                list_addfirst(searchResult->hitsArray, hit);
-
-            } else { return NULL; }
-        }
-    }
-     **/
 
     if (found) {
 
@@ -332,6 +292,7 @@ search_result_t *index_find(index_t *idx, const char *query)
     return searchResult;
 }
 
+/** @VERSION 2 **/
 search_result_t *diff_checker(search_result_t *main, search_result_t *sub, int i, int str_len, index_t*idx){
 
     list_iter_t *main_iter = (main->hitsArray);
@@ -379,8 +340,6 @@ search_result_t *diff_checker(search_result_t *main, search_result_t *sub, int i
 
 char *autocomplete(index_t *idx, char *input, size_t size)
 {
-    if (input == NULL)
-        return NULL;
 
     //Define the suggestion word that are found in the Trie-Tree.
     char*suggestion = trie_find(idx->trieTree, input);
@@ -426,6 +385,33 @@ int result_get_content_length(search_result_t *res)
     return length;
 }
 
+/** @VERSION 1 *//*
+search_hit_t *result_next(search_result_t *res)
+{
+    if (res == NULL) { return NULL; }
+    search_hit_t *hitsData = NULL;
+
+    // Check if there is more hit result on the current file.
+    if (res->accessedCounter == 2){
+
+        hitsData = list_poplast(res->hitsArray);
+
+        // if there is no more result, marked as accessed and check the next existing file
+        if (hitsData == NULL){
+            res->accessedCounter = 3;
+
+            if (res->next != NULL) {
+                hitsData = result_next(res->next);
+            }
+        }
+
+        // return the next existing data, when the current file have been used.
+        } else { hitsData = result_next(res->next); }
+
+    return hitsData;
+}*/
+
+/** @VERSION 2 **/
 search_hit_t *result_next(search_result_t *res)
 {
     if (res == NULL || res->hitsArray == NULL) { return NULL; }
@@ -435,13 +421,11 @@ search_hit_t *result_next(search_result_t *res)
     if (res->accessedCounter == 2){
 
         if (list_hasnext(res->hitsArray)) {
-
             hitsData = list_next(res->hitsArray);
-
         } else {
 
-            res->accessedCounter = 3;
             /* if there is no more result, marked as accessed and check the next existing file */
+            res->accessedCounter = 3;
             if (res->next != NULL) {
                 hitsData = result_next(res->next);
             }

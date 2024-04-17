@@ -31,7 +31,7 @@
  * The special characters are treated as their own words.
  * Special characters and valid words are extracted and placed in the given list as individual elements.
  */
-static void parse_word(char *token, list_t *l)
+void parse_word(char *token, list_t *l)
 {
     // Special characters to match and include
     char match_chars[] = " \n\t\".,!:;?()-";
@@ -78,11 +78,11 @@ static void parse_word(char *token, list_t *l)
 
             // Allocate len, which will null terminate the string when using calloc
             char *word = (char *)calloc(len+1, sizeof(char));
-            memcpy(word, token, len);
+            memcpy(word, start, len);
             list_addlast(l, word);
             start = special_char;
         }
-        else if (special_char == NULL) // Still a word left after token 
+        else if (special_char == NULL) // Still a word left after token
         {
             char *word = strdup(start);
             list_addlast(l, word);
@@ -92,7 +92,7 @@ static void parse_word(char *token, list_t *l)
 
     return;
 
-error:
+    error:
     ERROR_PRINT("Error occured parsing the token %s\n", token);
     return;
 }
