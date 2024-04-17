@@ -239,16 +239,16 @@ search_result_t *index_find(index_t *idx, const char *query)
     list_t *tokens = list_create(NULL);
     parse_word((char*)query, tokens);
 
-    /* If multi string */
+    /* if query contains multi words, create a new search result */
     if (list_size(tokens) > 1) {
 
-        /* Alloctes memory blokk for search result on multi-string */
+        /* Allocates memory block for search result on multi-string */
         search_result_t *root_str = index_find(idx, list_popfirst(tokens));
         search_result_t *tmp;
         int str_len = list_size(tokens);
         int currentPos = 0;
 
-        /* Find search hits locations thats contains n words in order */
+        /* Find search hits locations that's contains n words in order */
         int size = str_len;
         while (size > 0){
             currentPos++;
@@ -275,8 +275,9 @@ search_result_t *index_find(index_t *idx, const char *query)
     }
 
     // Check if there is any search hits
-    toLowerCase((char*)query);
-    list_t *hits = map_get(idx->map, (char*)query);
+    char *word = strdup(query);
+    toLowerCase(word);
+    list_t *hits = map_get(idx->map, (char*)word);
     if (hits != NULL) {
         found = true;
         searchResult->hitsArray = list_createiter(hits);
@@ -311,10 +312,10 @@ search_result_t *index_find(index_t *idx, const char *query)
  * minus the current position in the multi words string.
  *
  * @param main - The main search result that contains search hits on the first word.
- * @param sub - The sub search result that contains search hits on the word in posisjon +( wordIndex ).
- * @param wordIndex - The current potition of the word on the multi words string.
+ * @param sub - The sub search result that contains search hits on the word in position +( wordIndex ).
+ * @param wordIndex - The current position of the word on the multi words string.
  * @param str_len - The number of words in the multi words string.
- * @param idx - The index_t structure that contains dockuments data.
+ * @param idx - The index_t structure that contains documents data.
  *
  * **/
 search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, int wordIndex, int str_len, index_t*idx){
@@ -327,7 +328,7 @@ search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, in
     list_iter_t *sub_iter = sub->hitsArray;
 
     /* Create a new search result */
-    search_result_t *Newresult = create_search_result_t(idx);
+    search_result_t *NewResult = create_search_result_t(idx);
     list_t *hitsResult = list_create(NULL);
 
     bool jump = false;
@@ -366,8 +367,8 @@ search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, in
 
     /* Store the hits result in the new search result */
     list_iter_t *res_it = list_createiter(hitsResult);
-    Newresult->hitsArray = res_it;
-    return Newresult;
+    NewResult->hitsArray = res_it;
+    return NewResult;
 }
 
 char *autocomplete(index_t *idx, char *input, size_t size)
