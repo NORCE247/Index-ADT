@@ -112,7 +112,7 @@ typedef struct index
  */
 typedef struct search_result
 {
-    list_t *hitsArray;
+    list_iter_t *hitsArray;
     index_t *index;
     search_result_t *next;
     int accessedCounter;
@@ -279,7 +279,7 @@ search_result_t *index_find(index_t *idx, const char *query)
     list_t *hits = map_get(idx->map, (char*)query);
     if (hits != NULL) {
         found = true;
-        searchResult->hitsArray = hits;
+        searchResult->hitsArray = list_createiter(hits);
     }
 
     /** @VERSION 1
@@ -331,9 +331,11 @@ search_result_t *index_find(index_t *idx, const char *query)
 
 search_result_t *diff_checker(search_result_t *main, search_result_t *sub, int i, int str_len, index_t*idx){
 
-    list_iter_t *main_iter = list_createiter(main->hitsArray);
-    list_iter_t *sub_iter = list_createiter(sub->hitsArray);
+    list_iter_t *main_iter = (main->hitsArray);
+    list_iter_t *sub_iter = (sub->hitsArray);
     search_result_t *array = create_search_result_t(idx);
+    list_t *res = list_create(NULL);
+
     bool jump = false;
     while (list_hasnext(main_iter)){
 
@@ -356,13 +358,14 @@ search_result_t *diff_checker(search_result_t *main, search_result_t *sub, int i
 
             } else if (current_hits->location == current_hits_sub->location-i){
                 current_hits->len = str_len;
-                list_addlast(array->hitsArray, current_hits);
+                list_addlast(res, current_hits);
                 break;
             }
 
         }
     }
-
+    list_iter_t *res_it = list_createiter(res);
+    array->hitsArray = res_it;
     return array;
 }
 
@@ -420,8 +423,10 @@ search_hit_t *result_next(search_result_t *res)
     /* Check if there is more hits result on the current file. */
     if (res->accessedCounter == 2){
 
-        hitsData = list_popfirst(res->hitsArray);
+        if (list_hasnext(res->hitsArray)) {
 
+            hitsData = list_next(res->hitsArray);
+        }
         /* if there is no more result, marked as accessed and check the next existing file */
         if (hitsData == NULL){
             res->accessedCounter = 3;
