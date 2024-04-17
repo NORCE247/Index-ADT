@@ -241,7 +241,7 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
 search_result_t *index_find(index_t *idx, const char *query)
 {
     // Return NULL if there is no document to access.
-    if (idx == NULL || idx->documentName == NULL ) { return NULL; }
+    if (idx == NULL || idx->documentName == NULL || query == NULL) { return NULL; }
 
     search_result_t *searchResult = create_search_result_t(idx);
     bool found = false;
@@ -336,6 +336,9 @@ search_result_t *diff_checker(search_result_t *main, search_result_t *sub, int i
 
     list_iter_t *main_iter = (main->hitsArray);
     list_iter_t *sub_iter = (sub->hitsArray);
+    if (main_iter == NULL || sub_iter == NULL)
+        return NULL;
+
     search_result_t *array = create_search_result_t(idx);
     list_t *res = list_create(NULL);
 
@@ -344,7 +347,6 @@ search_result_t *diff_checker(search_result_t *main, search_result_t *sub, int i
 
         search_hit_t *current_hits = list_next(main_iter);
         while (list_hasnext(sub_iter)){
-
 
             if (jump){
                 goto X;
@@ -377,6 +379,9 @@ search_result_t *diff_checker(search_result_t *main, search_result_t *sub, int i
 
 char *autocomplete(index_t *idx, char *input, size_t size)
 {
+    if (input == NULL)
+        return NULL;
+
     //Define the suggestion word that are found in the Trie-Tree.
     char*suggestion = trie_find(idx->trieTree, input);
 
@@ -423,7 +428,7 @@ int result_get_content_length(search_result_t *res)
 
 search_hit_t *result_next(search_result_t *res)
 {
-    if (res == NULL) { return NULL; }
+    if (res == NULL || res->hitsArray == NULL) { return NULL; }
     search_hit_t *hitsData = NULL;
 
     /* Check if there is more hits result on the current file. */

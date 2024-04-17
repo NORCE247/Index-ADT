@@ -11,7 +11,7 @@ void PRINT_DEBUG_INFO(int inpos, int spos, int cur_word_len, char *input, char *
 {
     int x, y;
     int row = getmaxy(stdscr);
-    
+
     getyx(stdscr, y, x);
 
     move(row-8, 0);
@@ -27,7 +27,7 @@ void PRINT_DEBUG_INFO(int inpos, int spos, int cur_word_len, char *input, char *
     {
         printw("suggestion len: %d\n", strlen(suggestion));
     }
-        
+
 
     move(row-1, x);
     refresh();
@@ -163,7 +163,7 @@ char *ui_main(index_t *idx)
                     if (input[inpos] == ' ')
                     {
                         spos = inpos;
-                        
+
                         // Find the next space after the current word
                         for (;input[spos-1] != ' '; spos--)
                         {
@@ -180,7 +180,7 @@ char *ui_main(index_t *idx)
                 }
                 break;
 
-            // Right arrow key puts the suggested word into the buffer
+                // Right arrow key puts the suggested word into the buffer
             case KEY_RIGHT:
             case 67:
             case '\t':
@@ -190,12 +190,11 @@ char *ui_main(index_t *idx)
                     {
                         input[inpos] = suggestion[i];
                     }
-                    //inpos += strlen(suggestion) - cur_word_len;
                     c = ' ';
                 }
                 break;
 
-            // Pressing the home key will reset the buffer
+                // Pressing the home key will reset the buffer
             case KEY_HOME:
                 memset(input, '\0', 200);
                 inpos = 0;
@@ -206,7 +205,7 @@ char *ui_main(index_t *idx)
         }
 
         // Copy the last printable ASCII key input into the buffer
-        if ((c >= 32 && c <= 122))
+        if ((c >= 33 && c <= 122))
         {
             // We also nullterminate the next character in the buffer
             input[inpos] = c;
@@ -238,7 +237,7 @@ char *ui_main(index_t *idx)
         {
             // Null terminate the current input string
             input[inpos] = '\0';
-            
+
             // Get a suggestion from a given dictionary
             suggestion = autocomplete(idx, (char *)&input[spos], cur_word_len);
         }
@@ -248,7 +247,6 @@ char *ui_main(index_t *idx)
         }
 
         ui_display_input(input, suggestion, cur_word_len);
-
     }
 
     if (inpos > 0)
@@ -278,7 +276,7 @@ static void ui_display_results_help(int rows, search_hit_t *cur_pos)
     {
         printw("CURRENT WORD: %d", cur_pos->location);
     }
-        
+
     move(0, 0);
 
     attron(COLOR_PAIR(2));
@@ -328,7 +326,7 @@ static void ui_display_results_content(char **content, int content_length, searc
 void ui_result(search_result_t *res)
 {
     int row, c;
-    
+
     char **content = result_get_content(res);
     int content_length = result_get_content_length(res);
     search_hit_t *cur_pos = result_next(res);
@@ -366,7 +364,6 @@ void ui_result(search_result_t *res)
             content_length = result_get_content_length(res);
             if (content == NULL)
             {
-
                 attron(COLOR_PAIR(1));
                 printw("END OF RESULTS - PRESS HOME TO GO BACK");
                 attroff(COLOR_PAIR(1));
