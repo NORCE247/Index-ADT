@@ -172,7 +172,7 @@ int result_get_content_length(search_result_t *res);
  */
 search_hit_t *result_next(search_result_t *res);
 
-search_result_t *diff_checker(search_result_t *main, search_result_t *sub, int i, int str_len, index_t*idx);
+search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, int i, int str_len, index_t*idx);
 #endif
 
 
