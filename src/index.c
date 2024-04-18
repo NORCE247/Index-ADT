@@ -107,10 +107,16 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
 
         // Allocate memory to store content.
         idx->stringArray = malloc(sizeof(char*) * len + 1);
-        idx->trieTree = trie_create();
+        
+        if (idx->trieTree == NULL){
+            idx->trieTree = trie_create();
+        }
 
         // Allocate Hashmap for the usage of search hits
-        idx->map= map_create(compare_strings, djb2);
+        if (idx->map == NULL){
+            idx->map= map_create(compare_strings, djb2);
+        }
+        
 
         // Insert words in the String array, and Trie Tree.
         for (int i = 0; i < len; ++i) {
@@ -139,6 +145,7 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
 
             // insert null terminated word into the Trie-Tree.
             trie_insert(idx->trieTree, nullTerminated, NULL);
+
             idx->size++;
         }
 

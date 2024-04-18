@@ -71,7 +71,7 @@ map_t *map_create(cmpfunc_t cmpfunc, hashfunc_t hashfunc)
     map->size = 0;
 
     /** @MODIFIED SIZE: TO AVOID EXTENSION OF MAP */
-    map->numbuckets = 800000;
+    map->numbuckets = 10000;
     map->buckets = calloc(map->numbuckets, sizeof(mapentry_t *));
     if (map->buckets == NULL)
     {
