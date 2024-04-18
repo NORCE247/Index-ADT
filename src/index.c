@@ -12,22 +12,15 @@
  * @brief This structure represents an index entry for a document.
  * It contains information about the document along with related data structures for indexing.
  *
- * @struct index_t
- * @var documentName - A string containing the name of the document
- * @var stringArray - Represent document contents.
- * @var size - The length of the stringArray
- * @var trieTree - A trie structure used for autocompletion
- * @var next - A pointer to the next index_t structure
- * @var map - Hashmap
  */
 typedef struct index
 {
-    char *documentName;
-    char **stringArray;
-    trie_t *trieTree;
-    index_t *next;
-    int size;
-    map_t *map;
+    char *documentName; ///< A string containing the name of the document
+    char **stringArray; ///< Represent document contents.
+    trie_t *trieTree; ///< A trie structure used for autocompletion
+    index_t *next; ///< A pointer to the next index_t structure
+    int size; ///< The length of the stringArray
+    map_t *map; ///< Hashmap
 
 } index_t;
 
@@ -36,20 +29,13 @@ typedef struct index
  * and holds the information that's describe the length and found word location.
  * These information is stored in search_hit_t and search_hit_t is stored in a linked-list.
  *
- * @struct search_hit_t
- * @var hitsArray - A linked list containing search_hit_t
- * @var index - A pointer to index_t, is used to store the words in a document where search results is founded
- * @var next - Points to the next structure, and works like a linked list
- * @var accessedCounter - Represent the number of times a file have been visited.
- * [0,1,2,3] = [create, content, length, next content]
- *
  */
 typedef struct search_result
 {
-    list_iter_t *hitsArray;
-    index_t *index;
-    search_result_t *next;
-    int accessedCounter;
+    list_iter_t *hitsArray; ///< A linked list containing search_hit_t
+    index_t *index; ///< A pointer to index_t
+    search_result_t *next; ///< Points to the next structure, and works like a linked list
+    int accessedCounter; ///< Represent the number of times a file have been visited in difference function, [0,1,2,3] = [create, get content,get length, get next result]
 
 } search_result_t ;
 
@@ -101,8 +87,8 @@ void index_destroy(index_t *index)
 }
 
 /**
- * @param str: String to be convert tolower case.
- * */
+ * @param str: String to be convert to lower case.
+ */
 void toLowerCase(char *str) {
     for (int i = 0; str[i] != '\0'; i++) {
         str[i] = tolower((unsigned char)str[i]);
@@ -138,9 +124,8 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
             // Insert a word into the array.
             idx->stringArray[i] = word;
 
-            /** @VERSION 2
-             * @line:143-152 */
-            //Define word location and length.
+            /** @VERSION 2 @line:129-138 **/
+            // Define word location and length.
             search_hit_t *hit = malloc(sizeof(search_hit_t));
             hit->location = i;
             hit->len = 0;
@@ -152,7 +137,7 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
             // Store the word's location and length in the hashmap.
             map_put(idx->map, (char*)cpyWord, hit);
 
-            //insert null terminated word into the Trie-Tree.
+            // insert null terminated word into the Trie-Tree.
             trie_insert(idx->trieTree, nullTerminated, NULL);
             idx->size++;
         }
@@ -173,7 +158,7 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
 
 }
 
-/** @VERSION 1 *//*
+/* VERSION 1 *//*
 search_result_t *index_find(index_t *idx, const char *query)
 {
     // Return NULL if there is no document to access.
@@ -226,19 +211,18 @@ search_result_t *index_find(index_t *idx, const char *query)
     return searchResult;
 }*/
 
-/** @VERSION 2 **/
+
+/* VERSION 2 */
 search_result_t *index_find(index_t *idx, const char *query)
 {
     // Return NULL if there is no document to access.
     if (idx == NULL || idx->documentName == NULL || query == NULL) { return NULL; }
 
-    search_result_t *searchResult = create_search_result_t(idx);
-    bool found = false;
-
     /* Get the number of string in query */
     list_t *tokens = list_create(NULL);
     parse_word((char*)query, tokens);
 
+    /**@section MULTI STRING SEARCH **/
     /* if query contains multi words, create a new search result */
     if (list_size(tokens) > 1) {
 
@@ -248,7 +232,7 @@ search_result_t *index_find(index_t *idx, const char *query)
         int str_len = list_size(tokens);
         int currentPos = 0;
 
-        /* Find search hits locations that's contains n words in order */
+        /* Find search hits locations that's contains n words next to each other */
         int size = str_len;
         while (size > 0){
             currentPos++;
@@ -274,9 +258,15 @@ search_result_t *index_find(index_t *idx, const char *query)
         return root_str;
     }
 
-    // Check if there is any search hits
+    /**@section SINGLE STRING SEARCH **/
+    search_result_t *searchResult = create_search_result_t(idx);
+    bool found = false;
+
+    /* Convert to lower case */
     char *word = strdup(query);
     toLowerCase(word);
+
+    /* Check if there is any search hits */
     list_t *hits = map_get(idx->map, (char*)word);
     if (hits != NULL) {
         found = true;
@@ -294,8 +284,9 @@ search_result_t *index_find(index_t *idx, const char *query)
         }
 
     } else {
-        /* Find query on the nest documents, if current Search Result is none,
-         * store data on the current, else stores on the next Search Result */
+
+        /* if Search Result on current file is found, check next file as well.
+         * else store the search result from other file on the current allocated search result block */
         if (searchResult != NULL ){
             searchResult->next = index_find(idx->next, query);
         } else  { searchResult = index_find(idx->next, query); }
@@ -305,11 +296,10 @@ search_result_t *index_find(index_t *idx, const char *query)
 }
 
 
-/** @VERSION 2
+/**
  *
  * @brief Return a new search result that are created by comparing the main search result locations
- * with the sub search result location, where the sub location must be equal to the main location,
- * minus the current position in the multi words string.
+ * with the sub search result location, where the sub (location - word position) must be equal to the main location.
  *
  * @param main - The main search result that contains search hits on the first word.
  * @param sub - The sub search result that contains search hits on the word in position +( wordIndex ).
@@ -342,7 +332,7 @@ search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, in
             search_hit_t *current_hits_sub = list_next(sub_iter);
 
             samePosition:
-            jump = false;
+            jump = false; /* Reset the jump */
 
             /* If main location > sub location, check the next location in sub */
             if (current_hits_sub->location - wordIndex < current_hits->location){
@@ -418,7 +408,7 @@ int result_get_content_length(search_result_t *res)
     return length;
 }
 
-/** @VERSION 1 *//*
+/* @VERSION 1 *//*
 search_hit_t *result_next(search_result_t *res)
 {
     if (res == NULL) { return NULL; }
@@ -444,15 +434,16 @@ search_hit_t *result_next(search_result_t *res)
     return hitsData;
 }*/
 
-/** @VERSION 2 **/
+/* VERSION 2 */
 search_hit_t *result_next(search_result_t *res)
 {
     if (res == NULL || res->hitsArray == NULL) { return NULL; }
     search_hit_t *hitsData = NULL;
 
-    /* Check if there is more hits result on the current file. */
+    /* Check if current file have been accessed */
     if (res->accessedCounter == 2){
 
+        /* Check if there is more hits result on the current file. */
         if (list_hasnext(res->hitsArray)) {
             hitsData = list_next(res->hitsArray);
         } else {

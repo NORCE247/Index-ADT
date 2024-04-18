@@ -4,11 +4,12 @@
 #include <ctype.h>
 #include "trie.h"
 #include "printing.h"
+#include <stdint.h>
 
 
 #define TRIE_RADIX 26
 #define ASCII_TO_IDX(c) c - 97
-
+#define INT16_MAX 32767
 
 typedef struct node node_t;
 struct node
