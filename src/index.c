@@ -8,6 +8,12 @@
 #include "common.h"
 
 
+// Function prototypes
+static search_result_t *multi_find(index_t *idx, list_t *tokens, const char *query );
+static void toLowerCase(char *str);
+static search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, int subWordPos, int str_len, index_t*idx);
+
+
 /**
  * @brief This structure represents an index entry for a document.
  * It contains information about the document along with related data structures for indexing.
@@ -86,14 +92,6 @@ void index_destroy(index_t *index)
     } else { return; } // Avoid to deallocate a non-allocated memory block.
 }
 
-/**
- * @param str: String to be convert to lower case.
- */
-void toLowerCase(char *str) {
-    for (int i = 0; str[i] != '\0'; i++) {
-        str[i] = tolower((unsigned char)str[i]);
-    }
-}
 
 void index_add_document(index_t *idx, char *document_name, list_t *words)
 {
@@ -105,48 +103,31 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
         idx->documentName = document_name;
         int len = list_size(words);
 
-        // Allocate memory to store content.
+        // Allocate memory to store content, that can be use for search hits.
         idx->stringArray = malloc(sizeof(char*) * len + 1);
-        
-        if (idx->trieTree == NULL){
-            idx->trieTree = trie_create();
-        }
+        idx->trieTree = trie_create();
+        idx->map= map_create(compare_strings, djb2);
 
-        // Allocate Hashmap for the usage of search hits
-        if (idx->map == NULL){
-            idx->map= map_create(compare_strings, djb2);
-        }
-        
-
-        // Insert words in the String array, and Trie Tree.
+        // Insert words in the String array, Trie Tree, Hash Map.
         for (int i = 0; i < len; ++i) {
 
-            // Pack out the word from linked list and defined the len.
+            // Pack out the string from linked list & insert into the array.
             char *word = list_popfirst(words);
-
-            // Create a null terminated word.
-            char *nullTerminated = strdup(word);
-
-            // Insert a word into the array.
             idx->stringArray[i] = word;
+            idx->size++;
 
-            /** @VERSION 2 @line:129-138 **/
-            // Define word location and length.
+            // Create a null terminated string & Convert to lower case.
+            char *nullTerminated = strdup(word);
+            toLowerCase(nullTerminated);
+
+            // Setup Autocomplete
+            trie_insert(idx->trieTree, nullTerminated, NULL);
+
+            // Create & store word location in search_hit_t, and store it in the hashmap.
             search_hit_t *hit = malloc(sizeof(search_hit_t));
             hit->location = i;
             hit->len = 0;
-
-            // Convert string to lower case
-            char *cpyWord = strdup(word);
-            toLowerCase(cpyWord);
-
-            // Store the word's location and length in the hashmap.
-            map_put(idx->map, (char*)cpyWord, hit);
-
-            // insert null terminated word into the Trie-Tree.
-            trie_insert(idx->trieTree, nullTerminated, NULL);
-
-            idx->size++;
+            map_put(idx->map, (char*)nullTerminated, hit);
         }
 
     } else {
@@ -160,66 +141,9 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
         index_t *new = index_create();
         idx->next = new;
         index_add_document(idx->next, document_name, words);
-
     }
-
 }
 
-/* VERSION 1 *//*
-search_result_t *index_find(index_t *idx, const char *query)
-{
-    // Return NULL if there is no document to access.
-    if (idx == NULL || idx->documentName == NULL ) { return NULL; }
-
-    search_result_t *searchResult = create_search_result_t(idx);
-    bool found = false;
-
-    // Iterate through the words in the document.
-    for (int i = 0; i < idx->size; ++i) {
-
-        // Find a match word.
-        char *currentWord = idx->stringArray[i];
-        if (strcasecmp(currentWord, query) == 0) {
-
-            found = true;
-            search_hit_t *hit = malloc(sizeof(search_hit_t));
-            if (hit != NULL) {
-
-                // Define the matched word location and length.
-                hit->location = i;
-                hit->len = strlen(currentWord);
-
-                // Store the search hit data in the linked list.
-                list_addfirst(searchResult->hitsArray, hit);
-
-            } else { return NULL; }
-        }
-    }
-
-    if (found) {
-
-        // Store the document content.
-        searchResult->index = idx;
-
-        // If there is more documents, use recursion to store the next search results
-        if (idx->next != NULL){
-            searchResult->next = index_find(idx->next, query);
-        }
-
-    } else {
-
-        // Find query on the nest documents, if current Search Result is none,
-        // store data on the current, else stores on the next Search Result
-        if (searchResult != NULL ){
-            searchResult->next = index_find(idx->next, query);
-        } else  { searchResult = index_find(idx->next, query); }
-    }
-
-    return searchResult;
-}*/
-
-
-/* VERSION 2 */
 search_result_t *index_find(index_t *idx, const char *query)
 {
     // Return NULL if there is no document to access.
@@ -230,39 +154,9 @@ search_result_t *index_find(index_t *idx, const char *query)
     parse_word((char*)query, tokens);
 
     /**@section MULTI STRING SEARCH **/
-    /* if query contains multi words, create a new search result */
     if (list_size(tokens) > 1) {
-
-        /* Allocates memory block for search result on multi-string */
-        search_result_t *root_str = index_find(idx, list_popfirst(tokens));
-        search_result_t *tmp;
-        int str_len = list_size(tokens);
-        int currentPos = 0;
-
-        /* Find search hits locations that's contains n words next to each other */
-        int size = str_len;
-        while (size > 0){
-            currentPos++;
-
-            /* Stores the root_str position if the current word exist next to it*/
-            char *word = list_popfirst(tokens);
-            search_result_t *current_word = index_find(idx, word);
-            tmp = cmpSearchResult(root_str, current_word, currentPos, str_len, idx);
-
-            /* Update the root_str search hits position, to compare with the next word */
-            root_str = tmp;
-            size = list_size(tokens);
-        }
-
-        /* Search other files */
-        if (idx->next) {
-            if (root_str == NULL){
-                root_str = index_find(idx->next, query);
-            } else {
-                root_str->next = index_find(idx->next, query);
-            }
-        }
-        return root_str;
+        search_result_t *result = multi_find(idx, tokens, query);
+        return result;
     }
 
     /**@section SINGLE STRING SEARCH **/
@@ -275,97 +169,30 @@ search_result_t *index_find(index_t *idx, const char *query)
 
     /* Check if there is any search hits */
     list_t *hits = map_get(idx->map, (char*)word);
-    if (hits != NULL) {
+    if (hits != NULL){
         found = true;
         searchResult->hitsArray = list_createiter(hits);
     }
 
-    if (found) {
+    if (found){
 
-        // Store the document content.
+        /* Store the current dokument contents, and other existing files contents */
         searchResult->index = idx;
-
-        /* If there is more documents, use recursion to store the next search results */
         if (idx->next != NULL){
             searchResult->next = index_find(idx->next, query);
         }
 
     } else {
 
-        /* if Search Result on current file is found, check next file as well.
-         * else store the search result from other file on the current allocated search result block */
-        if (searchResult != NULL ){
+        /* Search other file if no query is found */
+        if (searchResult == NULL ){
+            searchResult = index_find(idx->next, query);
+        } else {
             searchResult->next = index_find(idx->next, query);
-        } else  { searchResult = index_find(idx->next, query); }
-    }
-
-    return searchResult;
-}
-
-
-/**
- *
- * @brief Return a new search result that are created by comparing the main search result locations
- * with the sub search result location, where the sub (location - word position) must be equal to the main location.
- *
- * @param main - The main search result that contains search hits on the first word.
- * @param sub - The sub search result that contains search hits on the word in position +( wordIndex ).
- * @param wordIndex - The current position of the word on the multi words string.
- * @param str_len - The number of words in the multi words string.
- * @param idx - The index_t structure that contains documents data.
- *
- * **/
-search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, int wordIndex, int str_len, index_t*idx){
-
-    /* Return Null if there is nothing to compare */
-    if ( main == NULL || sub == NULL  || main->hitsArray == NULL || sub->hitsArray == NULL ) { return NULL; }
-
-    /* Create iter to avoid modify the original hits result */
-    list_iter_t *main_iter = main->hitsArray;
-    list_iter_t *sub_iter = sub->hitsArray;
-
-    /* Create a new search result */
-    search_result_t *NewResult = create_search_result_t(idx);
-    list_t *hitsResult = list_create(NULL);
-
-    bool jump = false;
-    while (list_hasnext(main_iter)){
-
-        /* Compare the sub while main is not empty */
-        search_hit_t *current_hits = list_next(main_iter);
-        while (list_hasnext(sub_iter)){
-
-            if (jump){ goto samePosition; }
-            search_hit_t *current_hits_sub = list_next(sub_iter);
-
-            samePosition:
-            jump = false; /* Reset the jump */
-
-            /* If main location > sub location, check the next location in sub */
-            if (current_hits_sub->location - wordIndex < current_hits->location){
-                continue;
-
-            /* If main location < sub location, keep the sub location to compare with the next position in main */
-            } else if (current_hits_sub->location - wordIndex > current_hits->location){
-                jump = true;
-                break;
-
-            /* If main location == sub location, store the location in the hitsResult */
-            } else if (current_hits->location == current_hits_sub->location - wordIndex){
-
-                search_hit_t *matchedPosition = malloc(sizeof (search_hit_t));
-                matchedPosition->location = current_hits->location;
-                matchedPosition->len = str_len;
-                list_addlast(hitsResult, matchedPosition);
-                break; /* Compare the next location in main with */
-            }
         }
     }
 
-    /* Store the hits result in the new search result */
-    list_iter_t *res_it = list_createiter(hitsResult);
-    NewResult->hitsArray = res_it;
-    return NewResult;
+    return searchResult;
 }
 
 char *autocomplete(index_t *idx, char *input, size_t size)
@@ -415,33 +242,6 @@ int result_get_content_length(search_result_t *res)
     return length;
 }
 
-/* @VERSION 1 *//*
-search_hit_t *result_next(search_result_t *res)
-{
-    if (res == NULL) { return NULL; }
-    search_hit_t *hitsData = NULL;
-
-    // Check if there is more hit result on the current file.
-    if (res->accessedCounter == 2){
-
-        hitsData = list_poplast(res->hitsArray);
-
-        // if there is no more result, marked as accessed and check the next existing file
-        if (hitsData == NULL){
-            res->accessedCounter = 3;
-
-            if (res->next != NULL) {
-                hitsData = result_next(res->next);
-            }
-        }
-
-        // return the next existing data, when the current file have been used.
-        } else { hitsData = result_next(res->next); }
-
-    return hitsData;
-}*/
-
-/* VERSION 2 */
 search_hit_t *result_next(search_result_t *res)
 {
     if (res == NULL || res->hitsArray == NULL) { return NULL; }
@@ -466,4 +266,125 @@ search_hit_t *result_next(search_result_t *res)
     } else { hitsData = result_next(res->next); }
 
     return hitsData;
+}
+
+/**
+ * @param str: String to be convert to lower case.
+ */
+static void toLowerCase(char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        str[i] = tolower((unsigned char)str[i]);
+    }
+}
+
+/**
+ * @brief Create a search hits result for the multi-string search.
+ * @param idx - The index_t structure that contains documents data.
+ * @param tokens - The list of words that are used to search.
+ * @param query - The query string that are used to search.
+ * @return search_result_t* A pointer to the result .
+ */
+static search_result_t *multi_find(index_t *idx, list_t *tokens, const char *query ){
+
+    /* Allocates memory block for multi-string */
+    search_result_t *mainResult = index_find(idx, list_popfirst(tokens));
+    search_result_t *tmp;
+
+
+    int str_len = list_size(tokens);
+    int subWordPos = 0;
+
+    /* Find main-word locations that's contains the sub-word in the right position */
+    int size = str_len;
+    while (size > 0){
+        subWordPos++;
+
+        /* Stores the mainResult position if the sub word exist next to it*/
+        search_result_t *subWord = index_find(idx, list_popfirst(tokens));
+        tmp = cmpSearchResult(mainResult, subWord, subWordPos, str_len, idx);
+
+        /* Update the mainResult search hits position, to compare with the next word */
+        mainResult = tmp;
+        size = list_size(tokens);
+    }
+
+    /* Search other files */
+    if (idx->next) {
+
+        if (mainResult == NULL){
+            mainResult = index_find(idx->next, query);
+        } else {
+            mainResult->next = index_find(idx->next, query);
+        }
+    }
+    return mainResult;
+}
+
+/**
+ *
+ * @brief Return a new search result that are created by comparing the main search result locations
+ * with the sub search result location, where the sub (location - word position) must be equal to the main location.
+ *
+ * @param main - The main search result that contains search hits on the first word.
+ * @param sub - The sub search result that contains search hits on the word in position +( wordIndex ).
+ * @param subWordPos - The current position of the word on the multi words string.
+ * @param str_len - The number of words in the multi words string.
+ * @param idx - The index_t structure that contains documents data.
+ * @return search_result_t* A pointer to the New search result.
+ *
+ * **/
+static search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, int subWordPos, int str_len, index_t*idx){
+
+    /* Return Null if there is nothing to compare */
+    if ( main == NULL || sub == NULL  || main->hitsArray == NULL || sub->hitsArray == NULL ) { return NULL; }
+
+    /* Create iter to avoid removing the original hits result */
+    list_iter_t *main_iter = main->hitsArray;
+    list_iter_t *sub_iter = sub->hitsArray;
+
+    /* Create a new search result */
+    search_result_t *NewResult = create_search_result_t(idx);
+    list_t *hitsResult = list_create(NULL);
+
+    bool hold_SubWord_Pos = false;
+    while (list_hasnext(main_iter)){
+
+        /* Compare the sub-word index while main-word index is not empty */
+        search_hit_t *current_hits = list_next(main_iter);
+        while (list_hasnext(sub_iter)){
+
+            if (hold_SubWord_Pos){
+                goto next_mainWord_Pos;
+            }
+            search_hit_t *current_hits_sub = list_next(sub_iter);
+
+            next_mainWord_Pos:
+            hold_SubWord_Pos = false; /* Reset the jump */
+
+            /* If main location > sub location, check the next location in sub */
+            if (current_hits_sub->location - subWordPos < current_hits->location){
+                continue;
+
+            /* If main location < sub location, hold the sub-word index to compare with the next position in main */
+            } else if (current_hits_sub->location - subWordPos > current_hits->location){
+                hold_SubWord_Pos = true;
+                break;
+
+            /* If main location == sub location, store the location in the hitsResult */
+            } else if (current_hits->location == current_hits_sub->location - subWordPos){
+
+                search_hit_t *matchedPosition = malloc(sizeof (search_hit_t));
+                matchedPosition->location = current_hits->location;
+                matchedPosition->len = str_len;
+
+                list_addlast(hitsResult, matchedPosition);
+                break; /* Compare the next location in main with */
+            }
+        }
+    }
+
+    /* Store the hits result in the new search result */
+    list_iter_t *res_it = list_createiter(hitsResult);
+    NewResult->hitsArray = res_it;
+    return NewResult;
 }
