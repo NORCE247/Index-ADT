@@ -16,10 +16,11 @@ add_executable(Index_ADT
         src/benchmark.c
         src/common.c
         src/hashmap.c
-        src/index.c
+        src/indexVersion2.c
         src/linkedlist.c
         src/main.c
         src/test.c
         src/timer.c
         src/trie.c
-        src/ui.c)
+        src/ui.c
+        src/index.c)
