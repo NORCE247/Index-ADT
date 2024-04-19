@@ -9,20 +9,14 @@
  * @brief This structure represents an index entry for a document.
  * It contains information about the document along with related data structures for indexing.
  *
- * @struct index_t
- * @var documentName - A string containing the name of the document
- * @var stringArray - Represent document contents.
- * @var size - The length of the stringArray
- * @var trieTree - A trie structure used for autocompletion
- * @var next - A pointer to the next index_t structure
  */
 typedef struct index
 {
-    char *documentName;
-    char **stringArray;
-    trie_t *trieTree;
-    index_t *next;
-    int size;
+    char *documentName; ///< A string containing the name of the document
+    char **stringArray; ///< Represent document contents.
+    trie_t *trieTree; ///< A trie structure used for autocompletion
+    index_t *next; ///< A pointer to the next index_t structure
+    int size; ///< The length of the stringArray
 
 } index_t;
 
@@ -31,20 +25,13 @@ typedef struct index
  * and holds the information that's describe the length and found word location.
  * These information is stored in search_hit_t and search_hit_t is stored in a linked-list.
  *
- * @struct search_hit_t
- * @var hitsArray - A linked list containing search_hit_t
- * @var index - A pointer to index_t, is used to store the words in a document where search results is founded
- * @var next - Points to the next structure, and works like a linked list
- * @var accessedCounter - Represent the number of times a file have been visited.
- * [0,1,2,3] = [create, content, length, next content]
- *
  */
 typedef struct search_result
 {
-    list_t *hitsArray;
-    index_t *index;
-    search_result_t *next;
-    int accessedCounter;
+    list_t *hitsArray; ///< A linked list containing search_hit_t
+    index_t *index; ///< A pointer to index_t, is used to store the words in a document where search results is founded
+    search_result_t *next; ///< Points to the next structure, and works like a linked list
+    int accessedCounter; ///< Represent the number of times a file have been visited. [0,1,2,3] = [create, content, length, next content]
 
 } search_result_t ;
 
@@ -163,7 +150,7 @@ search_result_t *index_find(index_t *idx, const char *query)
 
                 // Define the matched word location and length.
                 hit->location = i;
-                hit->len = strlen(currentWord);
+                hit->len = 0;
 
                 // Store the search hit data in the linked list.
                 list_addfirst(searchResult->hitsArray, hit);
