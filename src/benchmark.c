@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     if (argc < 3)
     {
         nwords = 100000;
-        nruns = 7;
+        nruns = 10;
     }
     else
     {

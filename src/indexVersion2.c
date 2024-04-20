@@ -92,6 +92,12 @@ void index_destroy(index_t *index)
     } else { return; } // Avoid to deallocate a non-allocated memory block.
 }
 
+// Compares two strings without case-sensitivity 
+static inline int cmp_strs(void *a, void *b)
+{
+    return strcasecmp((const char *)a, (const char *)b);
+}
+
 void index_add_document(index_t *idx, char *document_name, list_t *words)
 {
 
@@ -105,7 +111,7 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
         // Allocate memory to store content, that can be use for search hits.
         idx->stringArray = malloc(sizeof(char*) * len + 1);
         idx->trieTree = trie_create();
-        idx->map= map_create(compare_strings, djb2);
+        idx->map= map_create(cmp_strs, djb2);
 
         // Insert words in the String array, Trie Tree, Hash Map.
         int i = 0;
@@ -118,17 +124,15 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
             idx->size++;
 
             // Create a null terminated string & Convert to lower case.
-            char *nullTerminated = strdup(word);
-            toLowerCase(nullTerminated);
 
             // Setup Autocomplete
-            trie_insert(idx->trieTree, nullTerminated, NULL);
+            trie_insert(idx->trieTree, word, NULL);
 
             // Create & store word location in search_hit_t, and store it in the hashmap.
             search_hit_t *hit = malloc(sizeof(search_hit_t));
             hit->location = i;
             hit->len = 0;
-            map_put(idx->map, (char*)nullTerminated, hit);
+            map_put(idx->map, (char*)word, hit);
             i++;
         }
         
