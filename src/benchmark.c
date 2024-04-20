@@ -8,21 +8,22 @@
 #include "printing.h"
 
 const char *example[15] = {
-    "\"",
-    "Lorem",
-    " ",
-    "ipsum",
-    " ", 
-    "dolor",
-    " ",
-    "sit",
-    " ", 
-    "amet",
-    ",",
-    "consectetur",
-    " ", 
-    "adipiscing",
-    "...",
+        "\"",
+        "Lorem",
+        " ",
+        "ipsum",
+        " ",
+        "dolor",
+        " ",
+        "sit",
+        " ",
+        "amet",
+        ",",
+        "consectetur",
+        " ",
+        "adipiscing",
+        ".",
+        "\""
 };
 
 
@@ -31,7 +32,7 @@ list_t *generate_document(int nwords)
     list_t *l = list_create(compare_strings);
     for (int i = 0; i < nwords; i++)
     {
-        list_addfirst(l, strdup(example[i % 15]));
+        list_addlast(l, strdup(example[i % 15]));
     }
     return l;
 }
@@ -97,7 +98,16 @@ int main(int argc, char **argv)
 
         // Test find on existing word
         before = gettime();
-        index_find(idx, example[after % 15]);
+        char *query ="Lorem ipsum dolor sit amet,consectetur adipiscing chai.";
+        search_result_t *f = index_find(idx, query);
+        result_get_content(f);
+        result_get_content_length(f);
+        search_hit_t *g = result_next(f);
+        if (g) {
+            printf("Found: Yes ");
+        } else {
+            printf("Found: No ");
+        }
         after = gettime();
         fprintf(stdout, "%llu ", after - before);
 
@@ -105,7 +115,7 @@ int main(int argc, char **argv)
 
         // Test find on non-existing word
         before = gettime();
-        index_find(idx, "noexist");
+        index_find(idx, "noexist svalbard");
         after = gettime();
         fprintf(stdout, "%llu\n", after - before);
 
@@ -123,7 +133,7 @@ int main(int argc, char **argv)
 
     return 0;
 
-error:
+    error:
     return 1;
 
 }

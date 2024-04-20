@@ -28,7 +28,7 @@ typedef struct index
  */
 typedef struct search_result
 {
-    list_t *hitsArray; ///< A linked list containing search_hit_t
+    list_t *hitsList; ///< A linked list containing search_hit_t
     index_t *index; ///< A pointer to index_t, is used to store the words in a document where search results is founded
     search_result_t *next; ///< Points to the next structure, and works like a linked list
     int accessedCounter; ///< Represent the number of times a file have been visited. [0,1,2,3] = [create, content, length, next content]
@@ -48,7 +48,7 @@ static search_result_t *create_search_result_t(index_t *idx) {
     }
 
     new->index = idx;
-    new->hitsArray = list_create(NULL);
+    new->hitsList = list_create(NULL);
     new->accessedCounter = 0;
     return new;
 }
@@ -153,7 +153,7 @@ search_result_t *index_find(index_t *idx, const char *query)
                 hit->len = 0;
 
                 // Store the search hit data in the linked list.
-                list_addfirst(searchResult->hitsArray, hit);
+                list_addfirst(searchResult->hitsList, hit);
 
             } else { return NULL; }
         }
@@ -235,7 +235,7 @@ search_hit_t *result_next(search_result_t *res)
     /* Check if there is more hits result on the current file. */
     if (res->accessedCounter == 2){
 
-        hitsData = list_poplast(res->hitsArray);
+        hitsData = list_poplast(res->hitsList);
 
         /* if there is no more result, marked as accessed and check the next existing file */
         if (hitsData == NULL){

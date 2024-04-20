@@ -12,7 +12,6 @@
 #include <ctype.h>
 #include "index.h"
 
-
 struct mapentry
 {
     void *key;
@@ -164,7 +163,7 @@ int map_haskey(map_t *map, void *key)
     {
         return 1;
     }
-    free(key);
+
 }
 
 

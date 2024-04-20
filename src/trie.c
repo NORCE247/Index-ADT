@@ -188,7 +188,7 @@ static int min_value(const int arr[]) {
 
 char *trie_find(trie_t *trie, char *key)
 {
-    //If the length of @param key is less than 3, return NULL
+    //If the length of the key is less than 3, return NULL
     unsigned len_key = strlen(key);
     if (len_key < 3) { return NULL; }
 
@@ -196,6 +196,7 @@ char *trie_find(trie_t *trie, char *key)
     node_t *current = trie->root;
     for (int i = 0; key[i] != '\0'; ++i) {
 
+        /* If the current character is not an alphabet, return NULL */
         if (ASCII_TO_IDX(tolower(key[i])) < 0 || ASCII_TO_IDX(tolower(key[i])) > 25) {
             return NULL;
         }
