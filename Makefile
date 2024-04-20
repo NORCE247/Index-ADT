@@ -45,6 +45,7 @@ run: test bench
 	./bench_index 1> benchVersion1.txt
 	./test_index2
 	./bench_index2 1> benchVersion2.txt
+	top -l 100 | grep bench_index2 >> top_output2.txt &
 
 clean:
 	rm -rf index test_index bench_index indexVersion2 test_index2 bench_index2 doc/*

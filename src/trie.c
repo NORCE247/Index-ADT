@@ -197,6 +197,10 @@ char *trie_find(trie_t *trie, char *key)
     node_t *current = trie->root;
     for (int i = 0; key[i] != '\0'; ++i) {
 
+         if ( 0 > ASCII_TO_IDX(key[i]) > 25){
+            return NULL;
+         }
+
         if (current->children[ASCII_TO_IDX(tolower(key[i]))] != NULL) {
             current = current->children[ASCII_TO_IDX(tolower(key[i]))];
 
@@ -211,7 +215,7 @@ char *trie_find(trie_t *trie, char *key)
     for (int i = 0; i < TRIE_RADIX; ++i) {
 
         if (current->children[i]) {
-
+            
             // If the child hold the key, return it,
             if (current->children[i]->key != NULL) {
                 return current->children[i]->key;
@@ -220,7 +224,7 @@ char *trie_find(trie_t *trie, char *key)
             // Otherwise collect value of the child node.
             int *index = current->children[i]->value;
             valueCollector[i] = *index;
-        }
+        } 
     }
 
     // Find the index that's holds the smallest value in the collected array.

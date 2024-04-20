@@ -142,6 +142,7 @@ void map_put(map_t *map, void *key, search_hit_t *hits)
     {   /**@MODIFIED Insert the hits result into the list */
         list_addlast(e->list, hits);
     }
+    
 }
 
 
@@ -163,6 +164,7 @@ int map_haskey(map_t *map, void *key)
     {
         return 1;
     }
+    free(key);
 }
 
 
@@ -195,6 +197,6 @@ unsigned long djb2(unsigned char *str)
 
     while ((c = *str++))
         hash = ((hash << 5) + hash) + tolower(c); /* hash * 33 + c */
-
+    
     return hash;
 }
