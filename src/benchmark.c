@@ -23,7 +23,6 @@ const char *example[15] = {
     " ", 
     "adipiscing",
     "...",
-    "\""
 };
 
 

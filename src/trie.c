@@ -9,7 +9,6 @@
 
 #define TRIE_RADIX 26
 #define ASCII_TO_IDX(c) c - 97
-#define INT16_MAX 32767
 
 typedef struct node node_t;
 struct node
@@ -197,9 +196,9 @@ char *trie_find(trie_t *trie, char *key)
     node_t *current = trie->root;
     for (int i = 0; key[i] != '\0'; ++i) {
 
-         if ( 0 > ASCII_TO_IDX(key[i]) > 25){
+        if (ASCII_TO_IDX(tolower(key[i])) < 0 || ASCII_TO_IDX(tolower(key[i])) > 25) {
             return NULL;
-         }
+        }
 
         if (current->children[ASCII_TO_IDX(tolower(key[i]))] != NULL) {
             current = current->children[ASCII_TO_IDX(tolower(key[i]))];

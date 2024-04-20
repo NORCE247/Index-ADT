@@ -108,10 +108,12 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
         idx->map= map_create(compare_strings, djb2);
 
         // Insert words in the String array, Trie Tree, Hash Map.
-        for (int i = 0; i < len; ++i) {
-
+        int i = 0;
+        list_iter_t *words_it = list_createiter(words);
+        while (list_hasnext(words_it))
+        {
             // Pack out the string from linked list & insert into the array.
-            char *word = list_popfirst(words);
+            char *word = list_next(words_it);
             idx->stringArray[i] = word;
             idx->size++;
 
@@ -127,8 +129,9 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
             hit->location = i;
             hit->len = 0;
             map_put(idx->map, (char*)nullTerminated, hit);
+            i++;
         }
-
+        
     } else {
 
         // Find empty index_t structure.
