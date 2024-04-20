@@ -110,7 +110,10 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
 
         // Allocate memory to store content, that can be use for search hits.
         idx->stringArray = malloc(sizeof(char*) * len + 1);
-        idx->trieTree = trie_create();
+        if (idx->trieTree == NULL){
+            idx->trieTree = trie_create();
+        }
+        
         idx->map= map_create(cmp_strs, djb2);
 
         // Insert words in the String array, Trie Tree, Hash Map.
@@ -123,11 +126,11 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
             idx->stringArray[i] = word;
             idx->size++;
 
-            // Create a null terminated string & Convert to lower case.
-
             // Setup Autocomplete
+            if (map_get(idx->map, word)== NULL){
             trie_insert(idx->trieTree, word, NULL);
-
+            }
+            
             // Create & store word location in search_hit_t, and store it in the hashmap.
             search_hit_t *hit = malloc(sizeof(search_hit_t));
             hit->location = i;
@@ -145,6 +148,7 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
 
         // Create a new index_t & store the data by recursion.
         index_t *new = index_create();
+        new->trieTree = idx->trieTree;
         idx->next = new;
         index_add_document(idx->next, document_name, words);
     }
@@ -197,7 +201,8 @@ search_result_t *index_find(index_t *idx, const char *query)
             searchResult->next = index_find(idx->next, query);
         }
     }
-
+    
+    list_destroy(tokens);
     return searchResult;
 }
 
