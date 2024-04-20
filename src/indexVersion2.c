@@ -195,7 +195,7 @@ search_result_t *index_find(index_t *idx, const char *query)
     } else {
 
         /* Search other file if no query is found */
-        if (searchResult == NULL ){
+        if (searchResult->hitsArray == NULL ){
             searchResult = index_find(idx->next, query);
         } else {
             searchResult->next = index_find(idx->next, query);

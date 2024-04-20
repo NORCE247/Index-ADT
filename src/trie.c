@@ -253,4 +253,5 @@ char *trie_find(trie_t *trie, char *key)
 
     // Return NULL, if no word is found.
     return NULL;
+
 }
