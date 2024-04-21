@@ -175,7 +175,7 @@ search_result_t *index_find(index_t *idx, const char *query)
             if (map_get(idx->map,(char*)test) == NULL)
             {
                 if (idx->next != NULL){
-                    index_find(idx, query);
+                    index_find(idx->next, query);
                 }
                 return NULL;
             }
