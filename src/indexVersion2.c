@@ -11,7 +11,13 @@
 // Function prototypes
 static search_result_t *multi_find(index_t *idx, list_t *tokens, const char *query );
 static search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, int subWordPos, int str_len, index_t*idx);
+static bool index_contains(index_t *idx, list_t *tokens, const char* query);
 
+// Compares two strings without case-sensitivity 
+static inline int cmp_strs(void *a, void *b)
+{
+    return strcasecmp((const char *)a, (const char *)b);
+}
 
 /**
  * @brief This structure represents an index entry for a document.
@@ -92,15 +98,8 @@ void index_destroy(index_t *index)
     } else { return; } // Avoid to deallocate a non-allocated memory block.
 }
 
-// Compares two strings without case-sensitivity 
-static inline int cmp_strs(void *a, void *b)
-{
-    return strcasecmp((const char *)a, (const char *)b);
-}
-
 void index_add_document(index_t *idx, char *document_name, list_t *words)
 {
-
     /* Check if the current index_t is empty and can be use & store data */
     if (idx->documentName == NULL) {
 
@@ -110,7 +109,7 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
 
         // Allocate memory to store content, that can be used for search hits.
         idx->stringArray = malloc(sizeof(char*) * len + 1);
-        if (idx->trieTree == NULL){
+        if (idx->trieTree == NULL) {
             idx->trieTree = trie_create();
         }
         
@@ -119,15 +118,15 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
         // Insert words in the String array, Trie Tree, Hash Map.
         int currentPos = 0;
         list_iter_t *words_it = list_createiter(words);
-        while (list_hasnext(words_it))
-        {
+        while (list_hasnext(words_it)) {
+
             // Pack out the string from linked list & insert into the array.
             char *word = list_next(words_it);
             idx->stringArray[currentPos] = word;
             idx->size++;
 
             // Setup Autocomplete
-            if (map_get(idx->map, word)== NULL){
+            if (map_get(idx->map, word)== NULL) {
             trie_insert(idx->trieTree, word, NULL);
             }
             
@@ -157,7 +156,9 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
 search_result_t *index_find(index_t *idx, const char *query)
 {
     // Return NULL if there is no document to access.
-    if (idx == NULL || idx->documentName == NULL || query == NULL) { return NULL; }
+    if (idx == NULL || idx->documentName == NULL || query == NULL) {
+        return NULL; 
+    }
 
     /* Get the number of string in query */
     list_t *tokens = list_create(NULL);
@@ -167,20 +168,12 @@ search_result_t *index_find(index_t *idx, const char *query)
     /**@section MULTI STRING SEARCH **/
     if (list_size(tokens) > 1) {
 
-        /* check if query exitst*/
-        list_iter_t *checker = list_createiter(tokens);
-        while (list_hasnext(checker))
-
-        {   char *test = list_next(checker);
-            if (map_get(idx->map,(char*)test) == NULL)
-            {
-                if (idx->next != NULL){
-                    index_find(idx->next, query);
-                }
-                return NULL;
-            }
+        /* check if query contains in any files */
+        if (index_contains(idx, tokens, query) == false){
+            return NULL;
         }
-        
+
+        /* return the result for multi word hits in the current file */
         search_result_t *result = multi_find(idx, tokens, query);
         return result;
     }
@@ -191,12 +184,12 @@ search_result_t *index_find(index_t *idx, const char *query)
 
     /* Check if there is any search hits */
     list_t *hits = map_get(idx->map, (char*)query);
-    if (hits != NULL){
+    if (hits != NULL) {
         found = true;
         searchResult->hitsList = list_createiter(hits);
     }
 
-    if (found){
+    if (found) {
 
         /* Store the current document content, and other existing files content */
         searchResult->index = idx;
@@ -220,7 +213,6 @@ search_result_t *index_find(index_t *idx, const char *query)
 
 char *autocomplete(index_t *idx, char *input, size_t size)
 {
-
     //Define the suggestion word that are found in the Trie-Tree.
     char *suggestion = trie_find(idx->trieTree, input);
 
@@ -234,7 +226,9 @@ char *autocomplete(index_t *idx, char *input, size_t size)
 
 char **result_get_content(search_result_t *res)
 {
-    if (res == NULL) { return NULL; }
+    if (res == NULL) {
+        return NULL; 
+    }
     char **content = NULL;
     
     /* Check if the current file's content have been accessed. */
@@ -251,15 +245,17 @@ char **result_get_content(search_result_t *res)
 
 int result_get_content_length(search_result_t *res)
 {
-    if (res == NULL) { return 0; }
+    if (res == NULL) {
+        return 0; 
+    }
     int length;
     
     /* Check if the content length on the current file have been accessed. */
-    if (res->accessedCounter == 1){
+    if (res->accessedCounter == 1) {
         res->accessedCounter = 2;  // Mark as accessed
         length = res->index->size;
 
-        // if its accessed, then check the next file.
+    /* if its accessed, then check the next file.*/
     } else { length = result_get_content_length(res->next); }
 
     return length;
@@ -267,11 +263,13 @@ int result_get_content_length(search_result_t *res)
 
 search_hit_t *result_next(search_result_t *res)
 {
-    if (res == NULL || res->hitsList == NULL) { return NULL; }
+    if (res == NULL || res->hitsList == NULL) {
+         return NULL; 
+    }
     search_hit_t *hitsData = NULL;
 
     /* Check if current file have been accessed */
-    if (res->accessedCounter == 2){
+    if (res->accessedCounter == 2) {
 
         /* Check if there is more hits result on the current file. */
         if (list_hasnext(res->hitsList)) {
@@ -291,7 +289,6 @@ search_hit_t *result_next(search_result_t *res)
     return hitsData;
 }
 
-
 /**
  * @brief Create a search hits result for the multi-string search.
  * @param idx - The index_t structure that contains documents data.
@@ -299,19 +296,18 @@ search_hit_t *result_next(search_result_t *res)
  * @param query - The query string that are used to search.
  * @return search_result_t* A pointer to the result .
  */
-static search_result_t *multi_find(index_t *idx, list_t *tokens, const char *query ){
+static search_result_t *multi_find(index_t *idx, list_t *tokens, const char *query ) {
 
     /* Allocates memory block for multi-string */
     search_result_t *mainResult = index_find(idx, list_popfirst(tokens));
     search_result_t *tmp;
-
 
     int str_len = list_size(tokens);
     int subWordPos = 0;
 
     /* Find main-word locations that's contains the sub-word in the right position */
     int size = str_len;
-    while (size > 0){
+    while (size > 0) {
         subWordPos++;
 
         /* Stores the mainResult position if the sub word exist next to it*/
@@ -351,7 +347,9 @@ static search_result_t *multi_find(index_t *idx, list_t *tokens, const char *que
 static search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, int subWordPos, int str_len, index_t*idx){
 
     /* Return Null if there is nothing to compare */
-    if ( main == NULL || sub == NULL || main->hitsList == NULL || sub->hitsList == NULL ) { return NULL; }
+    if ( main == NULL || sub == NULL || main->hitsList == NULL || sub->hitsList == NULL ) { 
+        return NULL; 
+    }
 
     /* Create iter to avoid removing the original hits result */
     list_iter_t *main_iter = main->hitsList;
@@ -362,31 +360,32 @@ static search_result_t *cmpSearchResult(search_result_t *main, search_result_t *
     list_t *hitsResult = list_create(NULL);
 
     bool hold_SubWord_Pos = false;
-    while (list_hasnext(main_iter)){
+    while (list_hasnext(main_iter)) {
 
         /* Compare the sub-word index while main-word index is not empty */
         search_hit_t *current_hits = list_next(main_iter);
-        while (list_hasnext(sub_iter)){
+        while (list_hasnext(sub_iter)) {
 
-            if (hold_SubWord_Pos){
+            if (hold_SubWord_Pos) {
                 goto next_mainWord_Pos;
+                hold_SubWord_Pos = false; /* Reset the jump */
             }
-            search_hit_t *current_hits_sub = list_next(sub_iter);
 
+            search_hit_t *current_hits_sub = list_next(sub_iter);
             next_mainWord_Pos:
-            hold_SubWord_Pos = false; /* Reset the jump */
 
             /* If main location > sub location, check the next location in sub */
-            if (current_hits_sub->location - subWordPos < current_hits->location){
+            if (current_hits_sub->location - subWordPos < current_hits->location) {
                 continue;
 
             /* If main location < sub location, hold the sub-word index to compare with the next position in main */
-            } else if (current_hits_sub->location - subWordPos > current_hits->location){
+            } else if (current_hits_sub->location - subWordPos > current_hits->location) {
+
                 hold_SubWord_Pos = true;
                 break;
 
             /* If main location == sub location, store the location in the hitsResult */
-            } else if (current_hits->location == current_hits_sub->location - subWordPos){
+            } else if (current_hits->location == current_hits_sub->location - subWordPos) {
 
                 search_hit_t *matchedPosition = malloc(sizeof (search_hit_t));
                 matchedPosition->location = current_hits->location;
@@ -402,4 +401,30 @@ static search_result_t *cmpSearchResult(search_result_t *main, search_result_t *
     list_iter_t *res_it = list_createiter(hitsResult);
     NewResult->hitsList = res_it;
     return NewResult;
+}
+
+/**
+ * @brief This function checks if any word in query is contains in alle the files.
+ * @param idx - The index_t structure that contains documents data.
+ * @param tokens - An list of query.
+ * @param query - the original query.
+ * @return bool - False is one of the word doesnt exist in any file.
+*/
+static bool index_contains(index_t *idx, list_t *tokens, const char* query) {
+
+    list_iter_t *query_iter = list_createiter(tokens);
+    while (list_hasnext(query_iter))
+    {   
+        /* Check if the current word is in the current file */
+        if (map_get(idx->map, (char*)list_next(query_iter)) == NULL)
+        {
+            /* If not, check the next file */
+            if (idx->next != NULL)
+            {
+                index_find(idx->next, query);
+            }
+            return false;
+        }
+    }
+    return true;
 }

@@ -135,10 +135,10 @@ void map_put(map_t *map, void *key, search_hit_t *hits)
     {
         map->buckets[b] = newentry(key, hits, map->buckets[b]);
         map->size++;
-
     }
     else
-    {   /**@MODIFIED Insert the hits result into the list */
+    {   
+        /**@MODIFIED Insert the hits result into the list */
         list_addlast(e->list, hits);
     }
     

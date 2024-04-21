@@ -188,11 +188,13 @@ static int min_value(const int arr[]) {
 
 char *trie_find(trie_t *trie, char *key)
 {
-    //If the length of the key is less than 3, return NULL
+    /* If the length of the key is less than 3, return NULL */
     unsigned len_key = strlen(key);
-    if (len_key < 3) { return NULL; }
+    if (len_key < 3) {
+        return NULL; 
+    }
 
-    // Traverse the trie tree to find the node corresponding to the last character from the @parameter: key.
+    /* Traverse the trie tree to find the node corresponding to the last character on the key. */
     node_t *current = trie->root;
     for (int i = 0; key[i] != '\0'; ++i) {
 
@@ -201,17 +203,17 @@ char *trie_find(trie_t *trie, char *key)
             return NULL;
         }
 
+        /* Update the current node to represent the node with the current character*/
         if (current->children[ASCII_TO_IDX(tolower(key[i]))] != NULL) {
             current = current->children[ASCII_TO_IDX(tolower(key[i]))];
-
         } else { return NULL; } // Return NULL if the node doesnt exist.
     }
 
-    // Create an array to collect the child node's value.
+    /* Create an array to collect the child node's value.*/
     int valueCollector[TRIE_RADIX];
     for (int i = 0; i < TRIE_RADIX; ++i) { valueCollector[i] = INT16_MAX; }
 
-    // Check all child on the current node.
+    /* Check all child on the current node.*/
     for (int i = 0; i < TRIE_RADIX; ++i) {
 
         if (current->children[i]) {
@@ -220,7 +222,7 @@ char *trie_find(trie_t *trie, char *key)
             if (current->children[i]->key != NULL) {
                 return current->children[i]->key;
             }
-
+            
             // Otherwise collect value of the child node.
             int *index = current->children[i]->value;
             valueCollector[i] = *index;
