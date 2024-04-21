@@ -13,11 +13,6 @@ static search_result_t *multi_find(index_t *idx, list_t *tokens, const char *que
 static search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, int subWordPos, int str_len, index_t*idx);
 static bool index_contains(index_t *idx, list_t *tokens, const char* query);
 
-// Compares two strings without case-sensitivity 
-static inline int cmp_strs(void *a, void *b)
-{
-    return strcasecmp((const char *)a, (const char *)b);
-}
 
 /**
  * @brief This structure represents an index entry for a document.
@@ -98,8 +93,15 @@ void index_destroy(index_t *index)
     } else { return; } // Avoid to deallocate a non-allocated memory block.
 }
 
+// Compares two strings without case-sensitivity 
+static inline int cmp_strs(void *a, void *b)
+{
+    return strcasecmp((const char *)a, (const char *)b);
+}
+
 void index_add_document(index_t *idx, char *document_name, list_t *words)
 {
+
     /* Check if the current index_t is empty and can be use & store data */
     if (idx->documentName == NULL) {
 
@@ -109,7 +111,7 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
 
         // Allocate memory to store content, that can be used for search hits.
         idx->stringArray = malloc(sizeof(char*) * len + 1);
-        if (idx->trieTree == NULL) {
+        if (idx->trieTree == NULL){
             idx->trieTree = trie_create();
         }
         
@@ -118,15 +120,15 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
         // Insert words in the String array, Trie Tree, Hash Map.
         int currentPos = 0;
         list_iter_t *words_it = list_createiter(words);
-        while (list_hasnext(words_it)) {
-
+        while (list_hasnext(words_it))
+        {
             // Pack out the string from linked list & insert into the array.
             char *word = list_next(words_it);
             idx->stringArray[currentPos] = word;
             idx->size++;
 
             // Setup Autocomplete
-            if (map_get(idx->map, word)== NULL) {
+            if (map_get(idx->map, word)== NULL){
             trie_insert(idx->trieTree, word, NULL);
             }
             
@@ -171,6 +173,7 @@ search_result_t *index_find(index_t *idx, const char *query)
         /* check if query contains in any files */
         if (index_contains(idx, tokens, query) == false){
             return NULL;
+            
         }
 
         /* return the result for multi word hits in the current file */
@@ -193,14 +196,14 @@ search_result_t *index_find(index_t *idx, const char *query)
 
         /* Store the current document content, and other existing files content */
         searchResult->index = idx;
-        if (idx->next != NULL){
+        if (idx->next != NULL) {
             searchResult->next = index_find(idx->next, query);
         }
 
     } else {
 
         /* Search other file if no query is found */
-        if (searchResult->hitsList == NULL ){
+        if (searchResult->hitsList == NULL ) {
             searchResult = index_find(idx->next, query);
         } else {
             searchResult->next = index_find(idx->next, query);
@@ -213,6 +216,7 @@ search_result_t *index_find(index_t *idx, const char *query)
 
 char *autocomplete(index_t *idx, char *input, size_t size)
 {
+
     //Define the suggestion word that are found in the Trie-Tree.
     char *suggestion = trie_find(idx->trieTree, input);
 
@@ -226,9 +230,7 @@ char *autocomplete(index_t *idx, char *input, size_t size)
 
 char **result_get_content(search_result_t *res)
 {
-    if (res == NULL) {
-        return NULL; 
-    }
+    if (res == NULL) { return NULL; }
     char **content = NULL;
     
     /* Check if the current file's content have been accessed. */
@@ -245,9 +247,7 @@ char **result_get_content(search_result_t *res)
 
 int result_get_content_length(search_result_t *res)
 {
-    if (res == NULL) {
-        return 0; 
-    }
+    if (res == NULL) { return 0; }
     int length;
     
     /* Check if the content length on the current file have been accessed. */
@@ -296,7 +296,7 @@ search_hit_t *result_next(search_result_t *res)
  * @param query - The query string that are used to search.
  * @return search_result_t* A pointer to the result .
  */
-static search_result_t *multi_find(index_t *idx, list_t *tokens, const char *query ) {
+static search_result_t *multi_find(index_t *idx, list_t *tokens, const char *query ){
 
     /* Allocates memory block for multi-string */
     search_result_t *mainResult = index_find(idx, list_popfirst(tokens));
@@ -368,11 +368,10 @@ static search_result_t *cmpSearchResult(search_result_t *main, search_result_t *
 
             if (hold_SubWord_Pos) {
                 goto next_mainWord_Pos;
-                hold_SubWord_Pos = false; /* Reset the jump */
             }
-
             search_hit_t *current_hits_sub = list_next(sub_iter);
             next_mainWord_Pos:
+            hold_SubWord_Pos = false; /* Reset the jump */
 
             /* If main location > sub location, check the next location in sub */
             if (current_hits_sub->location - subWordPos < current_hits->location) {
@@ -380,7 +379,6 @@ static search_result_t *cmpSearchResult(search_result_t *main, search_result_t *
 
             /* If main location < sub location, hold the sub-word index to compare with the next position in main */
             } else if (current_hits_sub->location - subWordPos > current_hits->location) {
-
                 hold_SubWord_Pos = true;
                 break;
 
