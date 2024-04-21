@@ -13,6 +13,11 @@ static search_result_t *multi_find(index_t *idx, list_t *tokens, const char *que
 static search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, int subWordPos, int str_len, index_t*idx);
 static bool index_contains(index_t *idx, list_t *tokens, const char* query);
 
+// Compares two strings without case-sensitivity 
+static inline int cmp_strs(void *a, void *b)
+{
+    return strcasecmp((const char *)a, (const char *)b);
+}
 
 /**
  * @brief This structure represents an index entry for a document.
@@ -91,12 +96,6 @@ void index_destroy(index_t *index)
         free(index);
 
     } else { return; } // Avoid to deallocate a non-allocated memory block.
-}
-
-// Compares two strings without case-sensitivity 
-static inline int cmp_strs(void *a, void *b)
-{
-    return strcasecmp((const char *)a, (const char *)b);
 }
 
 void index_add_document(index_t *idx, char *document_name, list_t *words)
