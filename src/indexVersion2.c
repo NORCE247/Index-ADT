@@ -172,7 +172,6 @@ search_result_t *index_find(index_t *idx, const char *query)
         /* check if query contains in any files */
         if (index_contains(idx, tokens, query) == false){
             return NULL;
-            
         }
 
         /* return the result for multi word hits in the current file */
