@@ -163,8 +163,24 @@ search_result_t *index_find(index_t *idx, const char *query)
     list_t *tokens = list_create(NULL);
     parse_word((char*)query, tokens);
 
+
     /**@section MULTI STRING SEARCH **/
     if (list_size(tokens) > 1) {
+
+        /* check if query exitst*/
+        list_iter_t *checker = list_createiter(tokens);
+        while (list_hasnext(checker))
+
+        {   char *test = list_next(checker);
+            if (map_get(idx->map,(char*)test) == NULL)
+            {
+                if (idx->next != NULL){
+                    index_find(idx, query);
+                }
+                return NULL;
+            }
+        }
+        
         search_result_t *result = multi_find(idx, tokens, query);
         return result;
     }
