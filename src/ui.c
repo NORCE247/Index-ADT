@@ -37,7 +37,7 @@ void PRINT_DEBUG_INFO(int inpos, int spos, int cur_word_len, char *input, char *
 /**
  * Initializes a Ncurses UI.
 */
-void ui_init()
+void ui_init(void)
 {
     // Initializes the screen and disables line buffering
     // This makes sure characters are immediately available to the program
@@ -70,7 +70,7 @@ void ui_init()
 /**
  * Display the help menu above the input line.
 */
-void ui_display_main_help()
+void ui_display_main_help(void)
 {
     int row = getmaxy(stdscr);
 
@@ -382,7 +382,7 @@ void ui_result(search_result_t *res)
 }
 
 
-void ui_deinit()
+void ui_deinit(void )
 {
     endwin();
     return;

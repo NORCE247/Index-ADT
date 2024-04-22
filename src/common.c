@@ -384,7 +384,7 @@ int is_valid_file (const char *filepath)
 }
 
 
-unsigned long long gettime()
+unsigned long long gettime(void)
 {
     // Get the time as a timeval struct
     struct timeval tv;

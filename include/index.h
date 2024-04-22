@@ -59,7 +59,7 @@ struct search_hit
  * Allocates memory for the index struct and its members.
  * If the index_t struct contains other structures (lists or hashtables etc.) these should be initialized here.
  */
-index_t *index_create();
+index_t *index_create(void);
 
 
 /**

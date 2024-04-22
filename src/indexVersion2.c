@@ -9,7 +9,7 @@
 
 
 // Function prototypes
-static search_result_t *multi_find(index_t *idx, list_t *tokens, const char *query );
+static search_result_t *index_multi_find(index_t *idx, list_t *tokens, const char *query );
 static search_result_t *cmpSearchResult(search_result_t *main, search_result_t *sub, int subWordPos, int str_len, index_t*idx);
 static bool index_contains(index_t *idx, list_t *tokens, const char* query);
 
@@ -20,33 +20,31 @@ static inline int cmp_strs(void *a, void *b)
 }
 
 /**
- * @brief This structure represents an index entry for a document.
+ * @brief This structure represents an index entry for each single document.
  * It contains information about the document along with related data structures for indexing.
- *
  */
 typedef struct index
 {
     char *documentName; ///< A string containing the name of the document
     char **stringArray; ///< Represent document contents.
-    trie_t *trieTree; ///< A trie structure used for autocompletion
-    index_t *next; ///< A pointer to the next index_t structure
-    int size; ///< The length of the stringArray
-    map_t *map; ///< Hashmap
+    int size;           ///< The length of the stringArray
+    trie_t *trieTree;   ///< A trie structure used for autocompletion
+    map_t *map;         ///< Hashmap
+    index_t *next;      ///< A pointer to the next index_t structure
 
 } index_t;
 
 /**
  * @brief This structure represent a iteration for the search results,
- * and holds the information that's describe the length and found word location.
- * These information is stored in search_hit_t and search_hit_t is stored in a linked-list.
- *
+ * and holds the information that's represent each word or sentence.
+ * These information is stored in search_hit_t that are stored in a linked-list.
  */
 typedef struct search_result
 {
-    list_iter_t *hitsList; ///< A linked list containing search_hit_t
-    index_t *index; ///< A pointer to index_t
-    search_result_t *next; ///< Points to the next structure, and works like a linked list
-    int accessedCounter; ///< Represent the number of times a file have been visited in difference function, [0,1,2,3] = [create, get content,get length, get next result]
+    list_iter_t *hitsList;  ///< A linked list containing search_hit_t
+    index_t *index;         ///< A pointer to index_t, where its have data that represent a document.
+    int accessedCounter;    ///< Represent the number of times a file have been visited in difference function, [0,1,2,3] = [create, get content,get length, get next result]
+    search_result_t *next;  ///< Points to the next structure, and works like a linked list
 
 } search_result_t ;
 
@@ -69,7 +67,7 @@ static search_result_t *create_search_result_t(index_t *idx) {
     return new;
 }
 
-index_t *index_create()
+index_t *index_create(void)
 {
     // Allocate
     index_t *index = malloc(sizeof(index_t));
@@ -104,11 +102,11 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
     /* Check if the current index_t is empty and can be use & store data */
     if (idx->documentName == NULL) {
 
-        // Mark as non-empty
+        /* Mark as non-empty */
         idx->documentName = document_name;
         int len = list_size(words);
 
-        // Allocate memory to store content, that can be used for search hits.
+        /* Allocate memory to store content, that can be used for search hits. */
         idx->stringArray = malloc(sizeof(char*) * len + 1);
         if (idx->trieTree == NULL){
             idx->trieTree = trie_create();
@@ -116,39 +114,40 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
         
         idx->map= map_create(cmp_strs, djb2);
 
-        // Insert words in the String array, Trie Tree, Hash Map.
+        /* Insert words in the String array, Trie Tree, Hash Map. */
         int currentPos = 0;
         list_iter_t *words_it = list_createiter(words);
         while (list_hasnext(words_it))
         {
-            // Pack out the string from linked list & insert into the array.
+            /* Pack out the string from linked list & insert into the array. */
             char *word = list_next(words_it);
             idx->stringArray[currentPos] = word;
             idx->size++;
 
-            // Setup Autocomplete
+            /* Setup Autocomplete */
             if (map_get(idx->map, word)== NULL){
             trie_insert(idx->trieTree, word, NULL);
             }
             
-            // Create & store word location in search_hit_t, and store it in the hashmap.
+            /* Create & store word location in search_hit_t, and store it in the hashmap. */
             search_hit_t *hit = malloc(sizeof(search_hit_t));
             hit->location = currentPos;
             hit->len = 0;
             map_put(idx->map, (char*)word, hit);
             currentPos++;
+
         }
         
     } else {
 
-        // Find empty index_t structure.
+        /* Find empty index_t structure. */
         while (idx->next != NULL) { idx = idx->next; }
 
-        // Create a new index_t & reuse the Trie Tree for all text files.
+        /* Find empty index_t structure. */
         index_t *new = index_create();
         new->trieTree = idx->trieTree;
 
-        // collects data on other files.
+        /* collects data on other files. */
         idx->next = new;
         index_add_document(idx->next, document_name, words);
     }
@@ -156,7 +155,7 @@ void index_add_document(index_t *idx, char *document_name, list_t *words)
 
 search_result_t *index_find(index_t *idx, const char *query)
 {
-    // Return NULL if there is no document to access.
+    /* Return NULL if there is no document to access. */
     if (idx == NULL || idx->documentName == NULL || query == NULL) {
         return NULL; 
     }
@@ -166,20 +165,20 @@ search_result_t *index_find(index_t *idx, const char *query)
     parse_word((char*)query, tokens);
 
 
-    /**@section MULTI STRING SEARCH **/
+    /** @section MULTI STRING SEARCH **/
     if (list_size(tokens) > 1) {
 
-        /* check if query contains in any files */
+        /* check if query is in any files */
         if (index_contains(idx, tokens, query) == false){
             return NULL;
         }
 
-        /* return the result for multi word hits in the current file */
-        search_result_t *result = multi_find(idx, tokens, query);
+        /* return the result for multi-word hits */
+        search_result_t *result = index_multi_find(idx, tokens, query);
         return result;
     }
 
-    /**@section SINGLE STRING SEARCH **/
+    /** @section SINGLE STRING SEARCH **/
     search_result_t *searchResult = create_search_result_t(idx);
     bool found = false;
 
@@ -215,7 +214,7 @@ search_result_t *index_find(index_t *idx, const char *query)
 char *autocomplete(index_t *idx, char *input, size_t size)
 {
 
-    //Define the suggestion word that are found in the Trie-Tree.
+    /* Define the suggestion word that are found in the Trie-Tree. */
     char *suggestion = trie_find(idx->trieTree, input);
 
     /* If there is no suggestion word, check the next document. */
@@ -237,7 +236,7 @@ char **result_get_content(search_result_t *res)
         content = res->index->stringArray;
         res->accessedCounter = 1 ; // Mark as accessed
 
-            // if its accessed, then check the next file.
+    /* if its been accessed, then check the next file. */
     } else { content = result_get_content(res->next); }
 
     return content;
@@ -281,7 +280,7 @@ search_hit_t *result_next(search_result_t *res)
             }
         }
 
-    // return  next existing hits results, when the current file have been used.
+    /* return  next existing hits results, when the current file have been used. */
     } else { hitsData = result_next(res->next); }
 
     return hitsData;
@@ -292,9 +291,9 @@ search_hit_t *result_next(search_result_t *res)
  * @param idx - The index_t structure that contains documents data.
  * @param tokens - The list of words that are used to search.
  * @param query - The query string that are used to search.
- * @return search_result_t* A pointer to the result .
+ * @return search_result_t* A pointer to the result.
  */
-static search_result_t *multi_find(index_t *idx, list_t *tokens, const char *query ){
+static search_result_t *index_multi_find(index_t *idx, list_t *tokens, const char *query ){
 
     /* Allocates memory block for multi-string */
     search_result_t *mainResult = index_find(idx, list_popfirst(tokens));
@@ -400,11 +399,12 @@ static search_result_t *cmpSearchResult(search_result_t *main, search_result_t *
 }
 
 /**
- * @brief This function checks if any word in query is contains in alle the files.
+ * @brief This function checks and confirm if the query is in one of the files.
  * @param idx - The index_t structure that contains documents data.
  * @param tokens - An list of query.
  * @param query - the original query.
- * @return bool - False is one of the word doesnt exist in any file.
+ * @return bool - False: if one of the word doesn't exist in any file,
+ *                True: if all of the word exist in at least one of the files.
 */
 static bool index_contains(index_t *idx, list_t *tokens, const char* query) {
 
@@ -419,8 +419,10 @@ static bool index_contains(index_t *idx, list_t *tokens, const char* query) {
             {
                 index_find(idx->next, query);
             }
+            free(query_iter);
             return false;
         }
     }
+    free(query_iter);
     return true;
 }

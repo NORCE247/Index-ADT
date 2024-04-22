@@ -18,7 +18,7 @@
  * 
  * This initializes a terminal "full-screen" interface.
  */
-void ui_init();
+void ui_init(void);
 
 
 /**
@@ -26,7 +26,7 @@ void ui_init();
  *
  * This will clear any terminal "full-screen" output.
  */
-void ui_deinit();
+void ui_deinit(void);
 
 /**
  * @brief Main UI.

@@ -127,6 +127,6 @@ int is_valid_file (const char *filepath);
  * 
  * @return unsigned long long The current UNIX time in microseconds (may wrap around).
  */
-unsigned long long gettime();
+unsigned long long gettime(void );
 
 #endif

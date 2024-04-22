@@ -53,7 +53,7 @@ static search_result_t *create_search_result_t(index_t *idx) {
     return new;
 }
 
-index_t *index_create()
+index_t *index_create(void)
 {
     // Allocate
     index_t *index = malloc(sizeof(index_t));

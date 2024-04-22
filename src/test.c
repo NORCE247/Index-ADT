@@ -36,7 +36,7 @@ static int failed(char *msg)
     return 1;
 }
 
-static int ok()
+static int ok(void)
 {
     fprintf(stderr, "%s", BGRN);
     fprintf(stderr, "%s", "OK\n");
@@ -45,14 +45,14 @@ static int ok()
 }
 
 
-int test_trie()
+int test_trie(void)
 {
     int num_failed = 0;
     int err = 0;
 
     // Test Create
     TEST_PRINT("trie_create(): ");
-    trie_t *trie = trie_create(cmpfunc);
+    trie_t *trie = trie_create();
     num_failed += (trie != NULL) ? ok() : failed(NULL);
 
     // Test insert
@@ -133,7 +133,7 @@ int test_trie()
 }
 
 
-int test_index()
+int test_index(void)
 {
     int num_failed = 0;
 
@@ -363,7 +363,7 @@ void segfault_handler(int signo)
     siglongjmp(jbuf, 1);
 }
 
-int main()
+int main(void)
 {
 
     if (signal (SIGSEGV, segfault_handler) == SIG_ERR)

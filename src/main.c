@@ -78,7 +78,7 @@ void initialize_index(char *root_dir)
     list_destroy (files);
 }
 
-void main_program_loop()
+void main_program_loop(void)
 {
     if (signal(SIGINT, interrupt_signal) == SIG_ERR) 
     {

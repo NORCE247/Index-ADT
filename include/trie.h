@@ -25,7 +25,7 @@ typedef struct trie trie_t;
  * 
  * @return trie_t* Pointer to an empty trie
  */
-trie_t *trie_create();
+trie_t *trie_create(void);
 
 
 /*

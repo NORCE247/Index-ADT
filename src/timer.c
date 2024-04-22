@@ -3,7 +3,7 @@
 #include <sys/time.h>
 #include "common.h"
 
-unsigned long long gettime()
+unsigned long long gettime(void)
 {
     struct timeval tv;
     if (gettimeofday(&tv, NULL) == -1)
