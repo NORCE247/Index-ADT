@@ -307,8 +307,14 @@ static search_result_t *index_multi_find(index_t *idx, list_t *tokens, const cha
     while (size > 0) {
         subWordPos++;
 
+        /* Reduse the search time by skipping the search prosess of  " " */
+        char *currentWord = list_popfirst(tokens);
+        if (cmp_strs(currentWord, " " ) == 0) {
+            continue;
+        }
+            
         /* Stores the mainResult position if the sub word exist next to it*/
-        search_result_t *subWord = index_find(idx, list_popfirst(tokens));
+        search_result_t *subWord = index_find(idx, currentWord);
         tmp = cmpSearchResult(mainResult, subWord, subWordPos, str_len, idx);
 
         /* Update the mainResult search hits position, to compare with the next word */

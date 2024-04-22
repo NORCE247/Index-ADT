@@ -9,7 +9,7 @@ BERNARDO
  Who's there?
 
 FRANCISCO
-Svalbard is so babe
+
  Nay, answer me: stand, and unfold yourself.
 
 BERNARDO
@@ -86,9 +86,6 @@ MARCELLUS
  Holla! Bernardo!
 
 BERNARDO
-Svalbard Mandag
-mandag svalbard
-Svalbard Mandag
 
  Say,
  What, is Horatio there?

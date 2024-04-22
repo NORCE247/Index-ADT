@@ -8,21 +8,21 @@
 #include "printing.h"
 
 const char *example[15] = {
-        "\"",
-        "Lorem",
-        " ",
-        "ipsum",
-        " ",
-        "dolor",
-        " ",
-        "sit",
-        " ",
-        "amet",
-        ",",
-        "consectetur",
-        " ",
-        "adipiscing",
-        "...",
+    "\"",
+    "Lorem",
+    " ",
+    "ipsum",
+    " ", 
+    "dolor",
+    " ",
+    "sit",
+    " ", 
+    "amet",
+    ",",
+    "consectetur",
+    " ", 
+    "adipiscing",
+    "...",
 };
 
 
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 
     return 0;
 
-    error:
+error:
     return 1;
 
 }
