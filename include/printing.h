@@ -3,13 +3,15 @@
  * @author Morten Grønnesby (morten.gronnesby@uit.no)
  * @brief Defines printing macros
  * @version 0.1
- * 
- * The file defines a number of printing macros that prints with color to different streams.
- * The different macros can be turned on and off using log level at compile time.
- * 
- * The printing functions prints to different streams depending on their purpose.
- * This means that it is possible to redirect different streams to files and still have debug or info messages.
- * 
+ *
+ * The file defines a number of printing macros that prints with color to
+ * different streams. The different macros can be turned on and off using log
+ * level at compile time.
+ *
+ * The printing functions prints to different streams depending on their
+ * purpose. This means that it is possible to redirect different streams to
+ * files and still have debug or info messages.
+ *
  * Example:
  * @code{.sh}
  * ./index data/ 2> debug.txt
@@ -19,7 +21,6 @@
 #define PRINTING_H
 
 #include <stdlib.h>
-
 
 // Regular text escape codes
 #define BLK "\033[0;30m"
@@ -94,7 +95,6 @@
 // Reset escape code
 #define reset "\033[0m"
 
-
 #ifndef LOG_LEVEL
 /**
  * @def LOG_LEVEL
@@ -108,51 +108,89 @@
 #if LOG_LEVEL <= 0
 /**
  * @brief Prints info message.
- * 
+ *
  * Prints a info message to the stdout stream.
- * The message will have a prefix in green indicating it is an info message and the file and line it was called from.
+ * The message will have a prefix in green indicating it is an info message and
+ * the file and line it was called from.
  */
-#define INFO_PRINT(...) do { fprintf(stdout, "%s", BGRN); fprintf(stdout, "[INFO][%s %d]: ", __FILE__, __LINE__); fprintf(stdout, "%s", reset); fprintf(stdout, __VA_ARGS__); } while(0)
+#define INFO_PRINT(...)                                                        \
+  do {                                                                         \
+    fprintf(stdout, "%s", BGRN);                                               \
+    fprintf(stdout, "[INFO][%s %d]: ", __FILE__, __LINE__);                    \
+    fprintf(stdout, "%s", reset);                                              \
+    fprintf(stdout, __VA_ARGS__);                                              \
+  } while (0)
 #else
-#define INFO_PRINT(...) do { } while(0)
+#define INFO_PRINT(...)                                                        \
+  do {                                                                         \
+  } while (0)
 #endif
-
 
 #if LOG_LEVEL <= 1
 /**
  * @brief Prints debug message.
- * 
+ *
  * Prints a debug message to the stderr stream.
- * The message will have a prefix in yellow indicating it is an debug message and the file and line it was called from.
+ * The message will have a prefix in yellow indicating it is an debug message
+ * and the file and line it was called from.
  */
-#define DEBUG_PRINT(...) do { fprintf(stderr, "%s", BYEL); fprintf(stderr, "[DEBUG][%s %d]: ", __FILE__, __LINE__); fprintf(stderr, "%s", reset); fprintf(stderr, __VA_ARGS__); } while(0)
+#define DEBUG_PRINT(...)                                                       \
+  do {                                                                         \
+    fprintf(stderr, "%s", BYEL);                                               \
+    fprintf(stderr, "[DEBUG][%s %d]: ", __FILE__, __LINE__);                   \
+    fprintf(stderr, "%s", reset);                                              \
+    fprintf(stderr, __VA_ARGS__);                                              \
+  } while (0)
 #else
-#define DEBUG_PRINT(...) do { } while(0)
+#define DEBUG_PRINT(...)                                                       \
+  do {                                                                         \
+  } while (0)
 #endif
-
 
 #if LOG_LEVEL <= 2
 #ifdef ERROR_FATAL
 /**
  * @brief Prints error message.
- * 
+ *
  * Prints an error message to the stderr stream.
- * The message will have a prefix in red indicating it is an error message and the file and line it was called from.
- * If the ERROR_FATAL macro is defined, the program will exit after the error messages is printed.
+ * The message will have a prefix in red indicating it is an error message and
+ * the file and line it was called from. If the ERROR_FATAL macro is defined,
+ * the program will exit after the error messages is printed.
  */
-#define ERROR_PRINT(...) do { fprintf(stderr, "%s", BRED); fprintf(stderr, "[ERROR][%s %d]: ", __FILE__, __LINE__); fprintf(stderr, "%s", reset); fprintf(stderr, __VA_ARGS__); exit(1); } while(0)
+#define ERROR_PRINT(...)                                                       \
+  do {                                                                         \
+    fprintf(stderr, "%s", BRED);                                               \
+    fprintf(stderr, "[ERROR][%s %d]: ", __FILE__, __LINE__);                   \
+    fprintf(stderr, "%s", reset);                                              \
+    fprintf(stderr, __VA_ARGS__);                                              \
+    exit(1);                                                                   \
+  } while (0)
 #else
-#define ERROR_PRINT(...) do { fprintf(stderr, "%s", BRED); fprintf(stderr, "[ERROR][%s %d]: ", __FILE__, __LINE__); fprintf(stderr, "%s", reset); fprintf(stderr, __VA_ARGS__); } while(0)
+#define ERROR_PRINT(...)                                                       \
+  do {                                                                         \
+    fprintf(stderr, "%s", BRED);                                               \
+    fprintf(stderr, "[ERROR][%s %d]: ", __FILE__, __LINE__);                   \
+    fprintf(stderr, "%s", reset);                                              \
+    fprintf(stderr, __VA_ARGS__);                                              \
+  } while (0)
 #endif
 #else
-#define ERROR_PRINT(...) do { } while(0)
+#define ERROR_PRINT(...)                                                       \
+  do {                                                                         \
+  } while (0)
 #endif
 
 /**
  * @brief Prints test message.
- * 
+ *
  * Used for unit test messages.
  */
-#define TEST_PRINT(...) do { fprintf(stderr, "%s", BCYN); fprintf(stderr, "[TEST]: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "%s", reset);} while(0)
+#define TEST_PRINT(...)                                                        \
+  do {                                                                         \
+    fprintf(stderr, "%s", BCYN);                                               \
+    fprintf(stderr, "[TEST]: ");                                               \
+    fprintf(stderr, __VA_ARGS__);                                              \
+    fprintf(stderr, "%s", reset);                                              \
+  } while (0)
 
 #endif // __PRINTING_H__
