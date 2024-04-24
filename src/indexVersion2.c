@@ -171,13 +171,13 @@ search_result_t *index_find(index_t *idx, const char *query)
 
         /* check if query is in any files */
         if (index_contains(idx, tokens, query) == false){
-            list_destroy_map(tokens);
+            list_destroy_elem(tokens);
             return NULL;
         }
 
         /* return the result for multi-word hits */
         search_result_t *result = index_multi_find(idx, tokens, query);
-        list_destroy_map(tokens);
+        list_destroy_elem(tokens);
         return result;
     }
 
@@ -209,8 +209,8 @@ search_result_t *index_find(index_t *idx, const char *query)
             searchResult->next = index_find(idx->next, query);
         }
     }
-    
-    list_destroy_map(tokens);
+
+    list_destroy_elem(tokens);
     return searchResult;
 }
 

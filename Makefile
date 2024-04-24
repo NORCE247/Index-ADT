@@ -38,7 +38,7 @@ test: $(SRC) Makefile
 
 bench: $(SRC) Makefile
 	$(CC) -o bench_index $(CFLAGS) $(SRC) src/benchmark.c -I$(INCLUDE) $(LDFLAGS)
-	$(CC) -pg -o bench_index2 $(CFLAGS) $(SRC2) src/benchmark.c -I$(INCLUDE) $(LDFLAGS)
+	$(CC) -o bench_index2 $(CFLAGS) $(SRC2) src/benchmark.c -I$(INCLUDE) $(LDFLAGS)
 
 run: test bench
 	./test_index

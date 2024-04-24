@@ -104,7 +104,7 @@ static void freebuckets(int numbuckets, mapentry_t **buckets, void (*destroy_key
                 destroy_key (tmp->key);
 
             if (destroy_val && tmp->list)
-                list_destroy_map(tmp->list);
+                list_destroy_elem(tmp->list);
 
             free(tmp);
         }

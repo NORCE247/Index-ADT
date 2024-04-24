@@ -51,7 +51,7 @@ void list_destroy(list_t *list);
  * @warning Subsequently accessing the list leads to undefined behaviour. The elements of the list are destroyed.
  * @param list The list to deallocate.
  */
-void list_destroy_map(list_t *list);
+void list_destroy_elem(list_t *list);
 
 /**
  * @brief Get the current size of the list.

@@ -61,7 +61,7 @@ void list_destroy(list_t *list)
     free(list);
 }
 
-void list_destroy_map(list_t *list)
+void list_destroy_elem(list_t *list)
 {
     listnode_t *node = list->head;
     while (node != NULL) {
