@@ -136,14 +136,15 @@ int trie_insert(trie_t *trie, char *key, void *value)
     // Find the child indices
     for (int i = 0; key[i] != '\0'; i++)
     {
-        int *nr = malloc(sizeof(int));
-        *nr = len - i;
+        /** @MODIFIED: **//* Defined the current position of the char */
+        int nr = len - i;
+
         // We only use lowercase letters (case-insensitive)
         if (iter->children[ASCII_TO_IDX(tolower(key[i]))] == NULL)
         {
             /** @MODIFIED: **//*the parameter for node_create, 
             by defined the integer type that represent the number of leftover char. */
-            node_t *new = node_create(NULL,nr);
+            node_t *new = node_create(NULL, (void*)(intptr_t)nr);
             if (new == NULL) {
                 free(new);
                 return -1;
@@ -151,7 +152,7 @@ int trie_insert(trie_t *trie, char *key, void *value)
             iter->children[ASCII_TO_IDX(tolower(key[i]))] = new;
         }
         /** @MODIFIED: **//* Overwrites the node_t value to represent the number of leftover chars. */
-        iter->value = nr;
+        iter->value = (void*)(intptr_t)nr;
         iter = iter->children[ASCII_TO_IDX(tolower(key[i]))];
     }
 
@@ -222,8 +223,8 @@ char *trie_find(trie_t *trie, char *key)
             }
             
             /* Otherwise collect value of the child node. */
-            int *index = current->children[i]->value;
-            valueCollector[i] = *index;
+            int index = (int)(intptr_t)current->children[i]->value;
+            valueCollector[i] = index;
         } 
     }
 

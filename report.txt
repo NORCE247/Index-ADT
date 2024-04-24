@@ -1,0 +1,427 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 33.20      8.10     8.10 211420200     0.00     0.00  list_next
+ 21.22     13.27     5.17 204600300     0.00     0.00  djb2
+ 14.82     16.88     3.61 102300150     0.00     0.00  list_popfirst
+  6.53     18.47     1.59 102300000     0.00     0.00  map_put
+  6.20     19.98     1.51 102300300     0.00     0.00  map_get
+  4.47     21.07     1.09 259160285     0.00     0.00  newnode
+  3.69     21.97     0.90 259160175     0.00     0.00  list_addlast
+  2.71     22.63     0.66       80     0.01     0.07  cmpSearchResult
+  2.18     23.16     0.53       10     0.05     0.13  generate_document
+  1.72     23.58     0.42       10     0.04     1.37  index_add_document
+  1.11     23.86     0.27      110     0.00     0.00  list_destroy_map
+  0.96     24.09     0.24 211420310     0.00     0.00  list_hasnext
+  0.57     24.23     0.14       10     0.01     0.38  destroy_doc
+  0.41     24.33     0.10 204600200     0.00     0.00  cmp_strs
+  0.21     24.38     0.05      110     0.00     0.00  list_addfirst
+  0.04     24.39     0.01       10     0.00     0.03  map_destroy
+  0.02     24.40     0.01                             list_destroyiter
+  0.00     24.40     0.00      430     0.00     0.00  isleaf
+  0.00     24.40     0.00      430     0.00     0.00  node_create
+  0.00     24.40     0.00      430     0.00     0.00  node_destroy
+  0.00     24.40     0.00      310     0.00     0.00  list_create
+  0.00     24.40     0.00      210     0.00     0.00  list_size
+  0.00     24.40     0.00      200     0.00     0.00  list_createiter
+  0.00     24.40     0.00      170     0.00     0.00  create_search_result_t
+  0.00     24.40     0.00      110     0.00     0.00  index_find
+  0.00     24.40     0.00      110     0.00     0.00  newentry
+  0.00     24.40     0.00      110     0.00     0.00  parse_word
+  0.00     24.40     0.00      110     0.00     0.00  trie_insert
+  0.00     24.40     0.00      100     0.00     0.00  list_destroy
+  0.00     24.40     0.00       60     0.00     0.00  gettime
+  0.00     24.40     0.00       20     0.00     0.00  index_contains
+  0.00     24.40     0.00       10     0.00     0.00  _trie_destroy
+  0.00     24.40     0.00       10     0.00     0.03  freebuckets
+  0.00     24.40     0.00       10     0.00     0.00  index_create
+  0.00     24.40     0.00       10     0.00     0.03  index_destroy
+  0.00     24.40     0.00       10     0.00     0.54  index_multi_find
+  0.00     24.40     0.00       10     0.00     0.00  map_create
+  0.00     24.40     0.00       10     0.00     0.00  result_get_content
+  0.00     24.40     0.00       10     0.00     0.00  result_get_content_length
+  0.00     24.40     0.00       10     0.00     0.00  result_next
+  0.00     24.40     0.00       10     0.00     0.00  trie_create
+  0.00     24.40     0.00       10     0.00     0.00  trie_destroy
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.04% of 24.40 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]    100.0    0.00   24.39                 main [1]
+                0.42   13.24      10/10          index_add_document [2]
+                0.00    5.38      20/20          index_find <cycle 1> [24]
+                0.14    3.61      10/10          destroy_doc [10]
+                0.53    0.79      10/10          generate_document [13]
+                0.00    0.28      10/10          index_destroy [15]
+                0.00    0.00      10/10          result_next [27]
+                0.00    0.00      60/60          gettime [37]
+                0.00    0.00      10/10          index_create [38]
+                0.00    0.00      10/10          result_get_content [40]
+                0.00    0.00      10/10          result_get_content_length [41]
+-----------------------------------------------
+                0.42   13.24      10/10          main [1]
+[2]     56.0    0.42   13.24      10         index_add_document [2]
+                1.59    3.47 102300000/102300000     map_put [8]
+                1.51    2.64 102300000/102300300     map_get [9]
+                3.92    0.00 102300000/211420200     list_next [3]
+                0.11    0.00 102300010/211420310     list_hasnext [19]
+                0.00    0.00     110/110         trie_insert [35]
+                0.00    0.00      10/210         list_size [32]
+                0.00    0.00      10/10          trie_create [42]
+                0.00    0.00      10/10          map_create [39]
+                0.00    0.00      10/200         list_createiter [33]
+-----------------------------------------------
+                0.00    0.00      10/211420200     result_next [27]
+                0.00    0.00     210/211420200     index_contains [25]
+                3.92    0.00 102300000/211420200     index_add_document [2]
+                4.18    0.00 109119980/211420200     cmpSearchResult [6]
+[3]     33.2    8.10    0.00 211420200         list_next [3]
+-----------------------------------------------
+[4]     22.0    0.00    5.38      20+100     <cycle 1 as a whole> [4]
+                0.00    5.38      10             index_multi_find <cycle 1> [5]
+                0.00    0.00     110             index_find <cycle 1> [24]
+-----------------------------------------------
+                                  10             index_find <cycle 1> [24]
+[5]     22.0    0.00    5.38      10         index_multi_find <cycle 1> [5]
+                0.66    4.72      80/80          cmpSearchResult [6]
+                0.00    0.00     140/102300150     list_popfirst [11]
+                0.00    0.00     130/204600200     cmp_strs [20]
+                0.00    0.00      90/210         list_size [32]
+                                  90             index_find <cycle 1> [24]
+-----------------------------------------------
+                0.66    4.72      80/80          index_multi_find <cycle 1> [5]
+[6]     22.0    0.66    4.72      80         cmpSearchResult [6]
+                4.18    0.00 109119980/211420200     list_next [3]
+                0.19    0.23 54559985/259160175     list_addlast [12]
+                0.12    0.00 109120070/211420310     list_hasnext [19]
+                0.00    0.00      80/310         list_create [31]
+                0.00    0.00      80/170         create_search_result_t [34]
+                0.00    0.00      80/200         list_createiter [33]
+-----------------------------------------------
+                2.59    0.00 102300000/204600300     map_put [8]
+                2.59    0.00 102300300/204600300     map_get [9]
+[7]     21.2    5.17    0.00 204600300         djb2 [7]
+-----------------------------------------------
+                1.59    3.47 102300000/102300000     index_add_document [2]
+[8]     20.8    1.59    3.47 102300000         map_put [8]
+                2.59    0.00 102300000/204600300     djb2 [7]
+                0.36    0.43 102299890/259160175     list_addlast [12]
+                0.00    0.05     110/110         newentry [22]
+                0.05    0.00 102299890/204600200     cmp_strs [20]
+-----------------------------------------------
+                0.00    0.00      90/102300300     index_find <cycle 1> [24]
+                0.00    0.00     210/102300300     index_contains [25]
+                1.51    2.64 102300000/102300300     index_add_document [2]
+[9]     17.0    1.51    2.64 102300300         map_get [9]
+                2.59    0.00 102300300/204600300     djb2 [7]
+                0.05    0.00 102300180/204600200     cmp_strs [20]
+-----------------------------------------------
+                0.14    3.61      10/10          main [1]
+[10]    15.4    0.14    3.61      10         destroy_doc [10]
+                3.61    0.00 102300010/102300150     list_popfirst [11]
+                0.00    0.00      10/100         list_destroy [36]
+-----------------------------------------------
+                0.00    0.00     140/102300150     index_multi_find <cycle 1> [5]
+                3.61    0.00 102300010/102300150     destroy_doc [10]
+[11]    14.8    3.61    0.00 102300150         list_popfirst [11]
+-----------------------------------------------
+                0.00    0.00     300/259160175     parse_word [26]
+                0.19    0.23 54559985/259160175     cmpSearchResult [6]
+                0.36    0.43 102299890/259160175     map_put [8]
+                0.36    0.43 102300000/259160175     generate_document [13]
+[12]     8.2    0.90    1.09 259160175         list_addlast [12]
+                1.09    0.00 259160175/259160285     newnode [14]
+-----------------------------------------------
+                0.53    0.79      10/10          main [1]
+[13]     5.4    0.53    0.79      10         generate_document [13]
+                0.36    0.43 102300000/259160175     list_addlast [12]
+                0.00    0.00      10/310         list_create [31]
+-----------------------------------------------
+                0.00    0.00     110/259160285     list_addfirst [21]
+                1.09    0.00 259160175/259160285     list_addlast [12]
+[14]     4.5    1.09    0.00 259160285         newnode [14]
+-----------------------------------------------
+                                  10             index_destroy [15]
+                0.00    0.28      10/10          main [1]
+[15]     1.1    0.00    0.28      10+10      index_destroy [15]
+                0.01    0.27      10/10          map_destroy [16]
+                0.00    0.00      10/10          trie_destroy [43]
+                                  10             index_destroy [15]
+-----------------------------------------------
+                0.01    0.27      10/10          index_destroy [15]
+[16]     1.1    0.01    0.27      10         map_destroy [16]
+                0.00    0.27      10/10          freebuckets [18]
+-----------------------------------------------
+                0.27    0.00     110/110         freebuckets [18]
+[17]     1.1    0.27    0.00     110         list_destroy_map [17]
+-----------------------------------------------
+                0.00    0.27      10/10          map_destroy [16]
+[18]     1.1    0.00    0.27      10         freebuckets [18]
+                0.27    0.00     110/110         list_destroy_map [17]
+-----------------------------------------------
+                0.00    0.00      10/211420310     result_next [27]
+                0.00    0.00     220/211420310     index_contains [25]
+                0.11    0.00 102300010/211420310     index_add_document [2]
+                0.12    0.00 109120070/211420310     cmpSearchResult [6]
+[19]     1.0    0.24    0.00 211420310         list_hasnext [19]
+-----------------------------------------------
+                0.00    0.00     130/204600200     index_multi_find <cycle 1> [5]
+                0.05    0.00 102299890/204600200     map_put [8]
+                0.05    0.00 102300180/204600200     map_get [9]
+[20]     0.4    0.10    0.00 204600200         cmp_strs [20]
+-----------------------------------------------
+                0.05    0.00     110/110         newentry [22]
+[21]     0.2    0.05    0.00     110         list_addfirst [21]
+                0.00    0.00     110/259160285     newnode [14]
+-----------------------------------------------
+                0.00    0.05     110/110         map_put [8]
+[22]     0.2    0.00    0.05     110         newentry [22]
+                0.05    0.00     110/110         list_addfirst [21]
+                0.00    0.00     110/310         list_create [31]
+-----------------------------------------------
+                                                 <spontaneous>
+[23]     0.0    0.01    0.00                 list_destroyiter [23]
+-----------------------------------------------
+                                  90             index_multi_find <cycle 1> [5]
+                0.00    5.38      20/20          main [1]
+[24]     0.0    0.00    0.00     110         index_find <cycle 1> [24]
+                0.00    0.00      20/20          index_contains [25]
+                0.00    0.00      90/102300300     map_get [9]
+                0.00    0.00     110/110         parse_word [26]
+                0.00    0.00     110/310         list_create [31]
+                0.00    0.00     110/210         list_size [32]
+                0.00    0.00      90/170         create_search_result_t [34]
+                0.00    0.00      90/200         list_createiter [33]
+                0.00    0.00      90/100         list_destroy [36]
+                                  10             index_multi_find <cycle 1> [5]
+-----------------------------------------------
+                0.00    0.00      20/20          index_find <cycle 1> [24]
+[25]     0.0    0.00    0.00      20         index_contains [25]
+                0.00    0.00     210/102300300     map_get [9]
+                0.00    0.00     210/211420200     list_next [3]
+                0.00    0.00     220/211420310     list_hasnext [19]
+                0.00    0.00      20/200         list_createiter [33]
+-----------------------------------------------
+                0.00    0.00     110/110         index_find <cycle 1> [24]
+[26]     0.0    0.00    0.00     110         parse_word [26]
+                0.00    0.00     300/259160175     list_addlast [12]
+-----------------------------------------------
+                0.00    0.00      10/10          main [1]
+[27]     0.0    0.00    0.00      10         result_next [27]
+                0.00    0.00      10/211420200     list_next [3]
+                0.00    0.00      10/211420310     list_hasnext [19]
+-----------------------------------------------
+                0.00    0.00     430/430         _trie_destroy [79]
+[28]     0.0    0.00    0.00     430         isleaf [28]
+-----------------------------------------------
+                0.00    0.00      10/430         trie_create [42]
+                0.00    0.00     420/430         trie_insert [35]
+[29]     0.0    0.00    0.00     430         node_create [29]
+-----------------------------------------------
+                0.00    0.00     430/430         _trie_destroy [79]
+[30]     0.0    0.00    0.00     430         node_destroy [30]
+-----------------------------------------------
+                0.00    0.00      10/310         generate_document [13]
+                0.00    0.00      80/310         cmpSearchResult [6]
+                0.00    0.00     110/310         newentry [22]
+                0.00    0.00     110/310         index_find <cycle 1> [24]
+[31]     0.0    0.00    0.00     310         list_create [31]
+-----------------------------------------------
+                0.00    0.00      10/210         index_add_document [2]
+                0.00    0.00      90/210         index_multi_find <cycle 1> [5]
+                0.00    0.00     110/210         index_find <cycle 1> [24]
+[32]     0.0    0.00    0.00     210         list_size [32]
+-----------------------------------------------
+                0.00    0.00      10/200         index_add_document [2]
+                0.00    0.00      20/200         index_contains [25]
+                0.00    0.00      80/200         cmpSearchResult [6]
+                0.00    0.00      90/200         index_find <cycle 1> [24]
+[33]     0.0    0.00    0.00     200         list_createiter [33]
+-----------------------------------------------
+                0.00    0.00      80/170         cmpSearchResult [6]
+                0.00    0.00      90/170         index_find <cycle 1> [24]
+[34]     0.0    0.00    0.00     170         create_search_result_t [34]
+-----------------------------------------------
+                0.00    0.00     110/110         index_add_document [2]
+[35]     0.0    0.00    0.00     110         trie_insert [35]
+                0.00    0.00     420/430         node_create [29]
+-----------------------------------------------
+                0.00    0.00      10/100         destroy_doc [10]
+                0.00    0.00      90/100         index_find <cycle 1> [24]
+[36]     0.0    0.00    0.00     100         list_destroy [36]
+-----------------------------------------------
+                0.00    0.00      60/60          main [1]
+[37]     0.0    0.00    0.00      60         gettime [37]
+-----------------------------------------------
+                0.00    0.00      10/10          main [1]
+[38]     0.0    0.00    0.00      10         index_create [38]
+-----------------------------------------------
+                0.00    0.00      10/10          index_add_document [2]
+[39]     0.0    0.00    0.00      10         map_create [39]
+-----------------------------------------------
+                0.00    0.00      10/10          main [1]
+[40]     0.0    0.00    0.00      10         result_get_content [40]
+-----------------------------------------------
+                0.00    0.00      10/10          main [1]
+[41]     0.0    0.00    0.00      10         result_get_content_length [41]
+-----------------------------------------------
+                0.00    0.00      10/10          index_add_document [2]
+[42]     0.0    0.00    0.00      10         trie_create [42]
+                0.00    0.00      10/430         node_create [29]
+-----------------------------------------------
+                0.00    0.00      10/10          index_destroy [15]
+[43]     0.0    0.00    0.00      10         trie_destroy [43]
+                0.00    0.00      10/10          _trie_destroy [79]
+-----------------------------------------------
+                                 420             _trie_destroy [79]
+                0.00    0.00      10/10          trie_destroy [43]
+[79]     0.0    0.00    0.00      10+420     _trie_destroy [79]
+                0.00    0.00     430/430         isleaf [28]
+                0.00    0.00     430/430         node_destroy [30]
+                                 420             _trie_destroy [79]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [79] _trie_destroy          [28] isleaf (trie.c)         [8] map_put
+   [6] cmpSearchResult (indexVersion2.c) [21] list_addfirst [22] newentry (hashmap.c)
+  [20] cmp_strs (indexVersion2.c) [12] list_addlast       [14] newnode (linkedlist.c)
+  [34] create_search_result_t (indexVersion2.c) [31] list_create [29] node_create (trie.c)
+  [10] destroy_doc            [33] list_createiter        [30] node_destroy
+   [7] djb2                   [36] list_destroy           [26] parse_word
+  [18] freebuckets (hashmap.c) [17] list_destroy_map      [40] result_get_content
+  [13] generate_document      [23] list_destroyiter       [41] result_get_content_length
+  [37] gettime                [19] list_hasnext           [27] result_next
+   [2] index_add_document      [3] list_next              [42] trie_create
+  [25] index_contains (indexVersion2.c) [11] list_popfirst [43] trie_destroy
+  [38] index_create           [32] list_size              [35] trie_insert
+  [15] index_destroy          [39] map_create              [4] <cycle 1>
+  [24] index_find             [16] map_destroy
+   [5] index_multi_find (indexVersion2.c) [9] map_get

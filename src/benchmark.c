@@ -22,7 +22,7 @@ const char *example[15] = {
     "consectetur",
     " ", 
     "adipiscing",
-    "...",
+    ".",
 };
 
 
@@ -31,7 +31,7 @@ list_t *generate_document(int nwords)
     list_t *l = list_create(compare_strings);
     for (int i = 0; i < nwords; i++)
     {
-        list_addfirst(l, strdup(example[i % 15]));
+        list_addlast(l, strdup(example[i % 15]));
     }
     return l;
 }
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     if (argc < 3)
     {
         nwords = 100000;
-        nruns = 10;
+        nruns = 5;
     }
     else
     {
